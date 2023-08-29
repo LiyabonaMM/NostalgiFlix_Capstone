@@ -1,18 +1,21 @@
 "use strict"
+
 require("dotenv").config()
+
 const fs = require("fs")
 const path = require("path")
 const Sequelize = require("sequelize")
-const process = require("process")
 const basename = path.basename(__filename)
 const env = process.env.NODE_ENV || "development"
+
 const config = {
-  username: process.env.DB_USERNAME,
-  password: process.env.DB_PASSWORD,
-  database: process.env.DB_NAME,
-  host: process.env.DB_HOST,
-  dialect: process.env.DB_DIALECT,
+  username: process.env.DB_USERNAME || "default_username",
+  password: process.env.DB_PASSWORD || "default_password",
+  database: process.env.DB_NAME || "default_db_name",
+  host: process.env.DB_HOST || "default_host",
+  dialect: process.env.DB_DIALECT || "mysql", // default to MySQL if no dialect provided
 }
+
 const db = {}
 
 let sequelize
