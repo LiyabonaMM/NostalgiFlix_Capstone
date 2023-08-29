@@ -1,11 +1,14 @@
+require("dotenv").config()
+
 const { Sequelize } = require("sequelize")
 
+// Utilize the environment variables
 const sequelize = new Sequelize(
-  "movie_ecommerce_db",
-  "root",
-  "mxhalisalm011216",
+  process.env.DB_NAME,
+  process.env.DB_USERNAME,
+  process.env.DB_PASSWORD,
   {
-    host: "localhost",
+    host: process.env.DB_HOST,
     dialect: "mysql",
   }
 )
