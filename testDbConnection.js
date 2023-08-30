@@ -1,21 +1,10 @@
+// testDbConnection.js
 require("dotenv").config()
+const pool = require("./config/config") // This correctly points to the config.js inside the config directory.
 
-const { Sequelize } = require("sequelize")
-
-// Utilize the environment variables
-const sequelize = new Sequelize(
-  process.env.DB_NAME,
-  process.env.DB_USERNAME,
-  process.env.DB_PASSWORD,
-  {
-    host: process.env.DB_HOST,
-    dialect: "mysql",
-  }
-)
-
-sequelize
-  .authenticate()
-  .then(() => {
+pool
+  .query("SELECT 1 + 1 AS result")
+  .then((result) => {
     console.log("Connection has been established successfully.")
   })
   .catch((error) => {

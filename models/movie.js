@@ -1,25 +1,20 @@
-'use strict';
-const {
-  Model
-} = require('sequelize');
-module.exports = (sequelize, DataTypes) => {
-  class Movie extends Model {
-    /**
-     * Helper method for defining associations.
-     * This method is not a part of Sequelize lifecycle.
-     * The `models/index` file will call this method automatically.
-     */
-    static associate(models) {
-      // define association here
-    }
-  }
-  Movie.init({
-    title: DataTypes.STRING,
-    imageUrl: DataTypes.STRING,
-    price: DataTypes.DECIMAL
-  }, {
-    sequelize,
-    modelName: 'Movie',
-  });
-  return Movie;
-};
+const pool = require("../config/config")
+
+const Movie = {
+  async createMovie(title, imageUrl, price) {
+    const [result] = await pool.execute(
+      "INSERT INTO Movies (title, imageUrl, price) VALUES (?, ?, ?)",
+      [title, imageUrl, price]
+    )
+    return result.insertId
+  },
+
+  async getAllMovies() {
+    const [movies] = await pool.query("SELECT * FROM Movies")
+    return movies
+  },
+
+  // Add any other required functions for the Movie model here...
+}
+
+module.exports = Movie
