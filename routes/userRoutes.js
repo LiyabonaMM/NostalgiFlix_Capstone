@@ -1,18 +1,18 @@
-const express = require("express")
-const userController = require("../controllers/userController")
-const { check, validationResult } = require("express-validator")
-const auth = require("../middlewares/authMiddleware")
+const express = require("express");
+const userController = require("../controllers/userController");
+const { check, validationResult } = require("express-validator");
+const auth = require("../middlewares/authMiddleware");
 
-const router = express.Router()
+const router = express.Router();
 
 // Validation middleware
 const validate = (req, res, next) => {
-  const errors = validationResult(req)
+  const errors = validationResult(req);
   if (!errors.isEmpty()) {
-    return res.status(422).json({ errors: errors.array() })
+    return res.status(422).json({ errors: errors.array() });
   }
-  next()
-}
+  next();
+};
 
 router.post(
   "/register",
@@ -30,7 +30,7 @@ router.post(
   ],
   validate,
   userController.register
-)
+);
 
 router.post(
   "/login",
@@ -40,13 +40,35 @@ router.post(
   ],
   validate,
   userController.login
-)
+);
 
-router.get("/all", userController.getAllUsers)
+// Fetch all users
+router.get("/all", userController.getAllUsers);
+
+// Access private route
 router.get("/private", auth, (req, res) => {
-  res.json({ message: "This is a private route!" })
-})
-router.put("/editProfile", auth, userController.editProfile)
-router.delete("/delete", auth, userController.deleteUser)
+  res.json({ message: "This is a private route!" });
+});
 
-module.exports = router
+// View logged-in user profile
+router.get("/profile", auth, userController.viewProfile);
+
+// Edit logged-in user profile
+router.put(
+  "/profile/update",
+  [
+    // Here, you can add validation checks for the new data as needed
+    check("firstName").optional().notEmpty().withMessage("First name is required"),
+    check("lastName").optional().notEmpty().withMessage("Last name is required"),
+    check("email").optional().isEmail().withMessage("Enter a valid email"),
+    check("oldPassword").optional().exists().withMessage("Current password is required if changing password"),
+    check("newPassword").optional().isLength({ min: 6 }).withMessage("New password must be at least 6 characters long"),
+  ],
+  validate,
+  userController.updateProfile
+);
+
+// Delete user (based on your existing route)
+router.delete("/delete", auth, userController.deleteUser);
+
+module.exports = router;

@@ -127,6 +127,71 @@ const userController = {
       res.status(500).json({ message: "Error deleting user." })
     }
   },
+  async viewProfile(req, res) {
+    try {
+      const userId = req.user.userId
+      const [users] = await pool.execute("SELECT * FROM Users WHERE id = ?", [
+        userId,
+      ])
+      const user = users[0]
+
+      if (!user) {
+        return res.status(404).json({ message: "User not found." })
+      }
+
+      // Remove sensitive info before sending response
+      delete user.password
+
+      return res.status(200).json(user)
+    } catch (error) {
+      console.error("Error detail:", error)
+      return res.status(500).json({ message: "Error fetching profile." })
+    }
+  },
+
+  async updateProfile(req, res) {
+    try {
+      const userId = req.user.userId
+      const { firstName, lastName, email, oldPassword, newPassword } = req.body
+
+      const [users] = await pool.execute("SELECT * FROM Users WHERE id = ?", [
+        userId,
+      ])
+      const user = users[0]
+
+      if (!user) {
+        return res.status(404).json({ message: "User not found." })
+      }
+
+      // If user wants to change the password
+      if (oldPassword && newPassword) {
+        const isMatch = await bcrypt.compare(oldPassword, user.password)
+
+        if (!isMatch) {
+          return res
+            .status(400)
+            .json({ message: "Current password is incorrect." })
+        }
+
+        const hashedNewPassword = await bcrypt.hash(newPassword, 10)
+
+        await pool.execute(
+          "UPDATE Users SET firstName = ?, lastName = ?, email = ?, password = ? WHERE id = ?",
+          [firstName, lastName, email, hashedNewPassword, userId]
+        )
+      } else {
+        await pool.execute(
+          "UPDATE Users SET firstName = ?, lastName = ?, email = ? WHERE id = ?",
+          [firstName, lastName, email, userId]
+        )
+      }
+
+      res.status(200).json({ message: "Profile updated successfully." })
+    } catch (error) {
+      console.error("Error detail:", error)
+      res.status(500).json({ message: "Error updating profile." })
+    }
+  },
 }
 
 module.exports = userController
