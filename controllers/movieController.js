@@ -8,6 +8,7 @@ const movieController = {
       const movies = await Movie.findAll()
       return res.status(200).json(movies)
     } catch (error) {
+      console.error("Error fetching movies:", error)
       return res.status(500).json({ message: "Error fetching movies." })
     }
   },
@@ -20,6 +21,7 @@ const movieController = {
       }
       return res.status(200).json(movie)
     } catch (error) {
+      console.error("Error fetching movie by ID:", error)
       return res.status(500).json({ message: "Error fetching movie." })
     }
   },
@@ -27,8 +29,18 @@ const movieController = {
   async createMovie(req, res) {
     try {
       const newMovie = await Movie.create(req.body)
-      return res.status(201).json(newMovie)
+      if (newMovie.insertId) {
+        return res
+          .status(201)
+          .json({
+            message: "Movie created successfully!",
+            movieId: newMovie.insertId,
+          })
+      } else {
+        return res.status(400).json({ message: "Movie creation failed!" })
+      }
     } catch (error) {
+      console.error("Error creating movie:", error)
       return res.status(500).json({ message: "Error creating movie." })
     }
   },
@@ -41,6 +53,7 @@ const movieController = {
       }
       return res.status(200).json({ message: "Movie updated successfully." })
     } catch (error) {
+      console.error("Error updating movie:", error)
       return res.status(500).json({ message: "Error updating movie." })
     }
   },
@@ -53,6 +66,7 @@ const movieController = {
       }
       return res.status(200).json({ message: "Movie deleted successfully." })
     } catch (error) {
+      console.error("Error deleting movie:", error)
       return res.status(500).json({ message: "Error deleting movie." })
     }
   },
