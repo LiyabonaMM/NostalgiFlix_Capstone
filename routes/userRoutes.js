@@ -1,6 +1,7 @@
 const express = require("express")
 const userController = require("../controllers/userController")
 const { check, validationResult } = require("express-validator")
+const auth = require("../middlewares/authMiddleware") // Importing the authentication middleware
 const router = express.Router()
 
 // Validation middleware
@@ -36,6 +37,11 @@ router.post(
   userController.login
 )
 
-router.get("/", userController.getAllUsers) // This is just for testing and should be removed in production!
+router.get("/all", userController.getAllUsers) // This is just for testing and should be removed in production!
+
+// Adding a protected route as an example
+router.get("/private", auth, (req, res) => {
+  res.json({ message: "This is a private route!" })
+})
 
 module.exports = router
