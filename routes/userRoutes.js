@@ -1,7 +1,8 @@
 const express = require("express")
 const userController = require("../controllers/userController")
 const { check, validationResult } = require("express-validator")
-const auth = require("../middlewares/authMiddleware") // Importing the authentication middleware
+const auth = require("../middlewares/authMiddleware")
+
 const router = express.Router()
 
 // Validation middleware
@@ -22,6 +23,10 @@ router.post(
     check("password")
       .isLength({ min: 6 })
       .withMessage("Password must be at least 6 characters long"),
+    check("adminCode")
+      .optional()
+      .isString()
+      .withMessage("Admin code should be a string"),
   ],
   validate,
   userController.register
@@ -37,14 +42,10 @@ router.post(
   userController.login
 )
 
-router.get("/all", userController.getAllUsers) // This is just for testing and should be removed in production!
-
-// Adding a protected route to fetch private data
+router.get("/all", userController.getAllUsers)
 router.get("/private", auth, (req, res) => {
   res.json({ message: "This is a private route!" })
 })
-
-// Adding the route to edit user profile
 router.put("/editProfile", auth, userController.editProfile)
 router.delete("/delete", auth, userController.deleteUser)
 

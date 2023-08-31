@@ -2,23 +2,24 @@ const bcrypt = require("bcryptjs")
 const jwt = require("jsonwebtoken")
 const pool = require("../config/config")
 
+const ADMIN_CODE = "liyaAdmin123" // You can set this to a secure code.
+
 const userController = {
   async register(req, res) {
     try {
       const hashedPassword = await bcrypt.hash(req.body.password, 10)
-      const { firstName, lastName, email } = req.body
+      const { firstName, lastName, email, adminCode } = req.body
+      const isAdmin = adminCode === ADMIN_CODE
 
       const [result] = await pool.execute(
-        "INSERT INTO Users (firstName, lastName, email, password) VALUES (?, ?, ?, ?)",
-        [firstName, lastName, email, hashedPassword]
+        "INSERT INTO Users (firstName, lastName, email, password, isAdmin) VALUES (?, ?, ?, ?, ?)",
+        [firstName, lastName, email, hashedPassword, isAdmin]
       )
 
       const token = jwt.sign(
         { userId: result.insertId },
         process.env.JWT_SECRET,
-        {
-          expiresIn: "1h",
-        }
+        { expiresIn: "1h" }
       )
 
       return res.status(201).json({
@@ -27,6 +28,7 @@ const userController = {
           firstName,
           lastName,
           email,
+          isAdmin,
         },
         token,
       })
@@ -81,18 +83,18 @@ const userController = {
           firstName: user.firstName,
           lastName: user.lastName,
           email: user.email,
+          isAdmin: user.isAdmin,
         },
         token,
       })
     } catch (error) {
+      console.error("Error detail:", error)
       return res.status(500).json({ message: "Error logging in user." })
     }
   },
 
   async editProfile(req, res) {
     try {
-      console.log("Request User Object:", req.user) // Log the req.user object
-
       const userId = req.user.userId
       const { firstName, lastName } = req.body
 
@@ -112,6 +114,7 @@ const userController = {
       res.status(500).json({ message: "Error updating profile." })
     }
   },
+
   async deleteUser(req, res) {
     try {
       const userId = req.user.userId
