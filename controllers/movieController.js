@@ -28,14 +28,13 @@ const movieController = {
 
   async createMovie(req, res) {
     try {
-      const newMovie = await Movie.create(req.body)
-      if (newMovie.insertId) {
-        return res
-          .status(201)
-          .json({
-            message: "Movie created successfully!",
-            movieId: newMovie.insertId,
-          })
+      const [result] = await Movie.create(req.body) // Destructure the returned array to get the result
+
+      if (result && result.insertId) {
+        return res.status(201).json({
+          message: "Movie created successfully!",
+          movieId: result.insertId,
+        })
       } else {
         return res.status(400).json({ message: "Movie creation failed!" })
       }
@@ -44,7 +43,6 @@ const movieController = {
       return res.status(500).json({ message: "Error creating movie." })
     }
   },
-
   async updateMovie(req, res) {
     try {
       const updatedMovie = await Movie.update(req.params.id, req.body)

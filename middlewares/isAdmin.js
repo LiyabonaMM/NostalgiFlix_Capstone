@@ -1,10 +1,16 @@
 const jwt = require("jsonwebtoken")
-const User = require("../models/userModel") // Assuming this is the correct path
+const User = require("../models/userModel")
 
 module.exports = async (req, res, next) => {
   try {
-    // Extract token and verify
-    const token = req.headers.authorization.split(" ")[1]
+    // Check if the header exists before extracting the token
+    const token =
+      req.headers.authorization && req.headers.authorization.split(" ")[1]
+
+    if (!token) {
+      throw "No token provided!"
+    }
+
     const decodedToken = jwt.verify(token, process.env.JWT_SECRET)
     const userId = decodedToken.userId
 
