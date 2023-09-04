@@ -1,12 +1,21 @@
-// server.js
+server.js // server.js
 require("dotenv").config()
-
+const cors = require("cors")
+const cookieParser = require("cookie-parser")
 const express = require("express")
 const app = express()
 
 // Middlewares
-app.use(express.json())
-app.use(express.urlencoded({ extended: false }))
+app.use((req, res, next) => {
+  res.header("Access-Control-Allow-Origin", "*")
+  res.header("Access-Control-Allow-Credentials", "true")
+  res.header("Access-Control-Allow-Methods", "*")
+  res.header("Access-Control-Request-Methods", "*")
+  res.header("Access-Control-Allow-Headers", "*")
+  res.header("Access-Control-Expose-Headers", "Authorization")
+  next()
+})
+app.use(express.json(), express.urlencoded({ extended: false }), cookieParser())
 
 const userRoutes = require("./routes/userRoutes")
 const movieRoutes = require("./routes/movieRoutes")
