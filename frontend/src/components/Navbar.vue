@@ -21,7 +21,7 @@
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarNav">
-      <ul class="navbar-nav">
+      <ul class="navbar-nav mx-auto">
         <li class="nav-item active">
           <router-link to="/" class="nav-link">Home</router-link>
         </li>
@@ -39,6 +39,11 @@
         </li>
         <li class="nav-item">
           <router-link to="/login" class="nav-link">Login/Register</router-link>
+        </li>
+        <li class="nav-item ml-auto">
+          <a href="#" class="nav-link">
+            <i class="fas fa-shopping-cart"></i>
+          </a>
         </li>
       </ul>
     </div>

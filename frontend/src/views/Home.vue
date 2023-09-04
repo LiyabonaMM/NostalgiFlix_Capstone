@@ -2,14 +2,14 @@
   <div class="home-container bg-dark text-white">
     <div class="text-center mt-5">
       <h1>Welcome to NostalgiFlix</h1>
-      <p>
+      <p class="text-center">
         Dive into our extensive collection of unforgettable movies that have
         stood the test of time.
       </p>
     </div>
 
     <!-- Movie Carousel -->
-    <div id="movieCarousel" class="carousel slide mt-4" data-ride="carousel">
+    <div id="movieCarousel" class="carousel slide mt-5" data-ride="carousel">
       <div class="carousel-inner">
         <div class="carousel-item active">
           <img
@@ -37,7 +37,7 @@
             <p>Some description about Movie 2</p>
           </div>
         </div>
-        <!-- ... add more carousel items as needed -->
+        <!-- ... Additional carousel items can be added here ... -->
       </div>
       <a
         class="carousel-control-prev"
@@ -100,11 +100,11 @@
     </div>
 
     <!-- Call to Action -->
-    <div class="text-center mt-5 mb-5">
+    <div class="cta text-center mt-5 mb-5">
       <p>
-        Ready to dive in? <router-link to="/login">Register</router-link> or
-        <router-link to="/login">login</router-link> to access our collection of
-        movies.
+        <router-link to="/register" class="btn-action">Register</router-link>
+        <router-link to="/login" class="btn-action">Login</router-link> to
+        access our collection of movies.
       </p>
     </div>
   </div>
@@ -176,5 +176,20 @@ p {
     .carousel-inner {
         max-height: 300px;
     }
+}
+
+.btn-action {
+    background-color: grey;
+    padding: 0.6rem 1.5rem;
+    border-radius: 3px;
+    font-weight: 600;
+    transition: background-color 0.3s;
+    margin: 0 0.5rem;
+    color: white;
+}
+
+.btn-action:hover {
+    background-color: #B0B0B0;
+    text-decoration: none;
 }
 </style>
