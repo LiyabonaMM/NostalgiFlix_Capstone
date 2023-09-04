@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>API Endpoints Dashboard</title>
+    <style>
+      body {
+          font-family: Arial, sans-serif;
+          background-color: #f5f5f5;
+          margin: 0;
+          padding: 20px;
+      }
+
+      h1 {
+          text-align: center;
+          color: #333;
+          padding-bottom: 20px;
+          border-bottom: 2px solid #ddd;
+          margin-bottom: 20px;
+      }
+
+      section {
+          background-color: #fff;
+          padding: 15px;
+          border-radius: 5px;
+          box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+          margin-bottom: 20px;
+      }
+
+      h2 {
+          color: #666;
+          border-bottom: 1px solid #ddd;
+          padding-bottom: 10px;
+          margin-top: 0;
+      }
+
+      ul {
+          list-style-type: none;
+          padding: 0;
+      }
+
+      li {
+          padding: 8px 0;
+      }
+
+      a {
+          text-decoration: none;
+          color: #007BFF;
+          transition: color 0.3s;
+      }
+
+      a:hover {
+          color: #0056b3;
+      }
+    </style>
+  </head>
+
+  <body>
+    <h1>API Endpoints Dashboard</h1>
+
+    <section>
+      <h2>Main Routes</h2>
+      <ul>
+        <li>
+          <a href="http://localhost:3000/">GET /</a> - Check server status.
+        </li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>User Routes</h2>
+      <ul>
+        <li><a href="#">POST /api/users/register</a> - Register a user.</li>
+        <li><a href="#">POST /api/users/login</a> - User login.</li>
+        <li>
+          <a href="http://localhost:3000/api/users/all">GET /api/users/all</a> -
+          Get all users.
+        </li>
+        <li>
+          <a href="http://localhost:3000/api/users/private"
+            >GET /api/users/private</a
+          >
+          - Test authentication.
+        </li>
+        <li><a href="#">DELETE /api/users/delete</a> - Delete a user.</li>
+        <li><a href="#">PUT /api/users/update</a> - Update a user.</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Movie Routes</h2>
+      <ul>
+        <li>
+          <a href="http://localhost:3000/api/movies/movies"
+            >GET /api/movies/movies</a
+          >
+          - Get all movies.
+        </li>
+        <li><a href="#">POST /api/movies/create</a> - Add a new movie.</li>
+        <li><a href="#">DELETE /api/movies/delete</a> - Delete a movie.</li>
+        <li><a href="#">PUT /api/movies/update</a> - Update movie details.</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Review Routes</h2>
+      <ul>
+        <li>
+          <a href="http://localhost:3000/api/reviews/reviews"
+            >GET /api/reviews/reviews</a
+          >
+          - Get all reviews.
+        </li>
+        <li><a href="#">POST /api/reviews/create</a> - Add a new review.</li>
+        <li><a href="#">DELETE /api/reviews/delete</a> - Delete a review.</li>
+        <li>
+          <a href="#">PUT /api/reviews/update</a> - Update review details.
+        </li>
+      </ul>
+    </section>
+  </body>
+</html>
