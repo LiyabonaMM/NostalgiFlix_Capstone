@@ -1,21 +1,15 @@
-server.js // server.js
 require("dotenv").config()
-const cors = require("cors")
-const cookieParser = require("cookie-parser")
+
 const express = require("express")
+const cors = require("cors") // Import the CORS module here
 const app = express()
 
+// Enable CORS for all routes
+app.use(cors())
+
 // Middlewares
-app.use((req, res, next) => {
-  res.header("Access-Control-Allow-Origin", "*")
-  res.header("Access-Control-Allow-Credentials", "true")
-  res.header("Access-Control-Allow-Methods", "*")
-  res.header("Access-Control-Request-Methods", "*")
-  res.header("Access-Control-Allow-Headers", "*")
-  res.header("Access-Control-Expose-Headers", "Authorization")
-  next()
-})
-app.use(express.json(), express.urlencoded({ extended: false }), cookieParser())
+app.use(express.json())
+app.use(express.urlencoded({ extended: false }))
 
 const userRoutes = require("./routes/userRoutes")
 const movieRoutes = require("./routes/movieRoutes")
