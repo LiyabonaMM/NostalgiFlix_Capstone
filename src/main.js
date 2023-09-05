@@ -8,6 +8,7 @@ import Movies from "@/views/Movies.vue"
 import Contact from "@/views/Contact.vue"
 import Admin from "@/views/Admin.vue"
 import Login from "@/views/Login.vue"
+import Register from "@/views/Register.vue"
 import "bootstrap/dist/css/bootstrap.css"
 import bootstrap from "bootstrap/dist/js/bootstrap.bundle.min.js"
 
@@ -43,6 +44,11 @@ const routes = [
     path: "/login",
     name: "Login",
     component: Login,
+  },
+  {
+    path: "/register",
+    name: "Register",
+    component: Register,
   },
 ]
 

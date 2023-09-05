@@ -22,12 +22,11 @@
               <h5 class="card-title">{{ movie.title }}</h5>
               <p class="card-text">{{ movie.description }}</p>
               <div class="rating">
-                <!-- Star Rating Here -->
                 <i
                   v-for="n in 5"
                   :key="n"
                   class="fa"
-                  :class="n <= movie.rating ? 'fa-star' : 'fa-star-o'"
+                  :class="n <= Math.floor(movie.rating) ? 'fa-star' : 'fa-star-o'"
                 ></i>
               </div>
               <div class="mt-3">
@@ -52,7 +51,11 @@ export default {
   async created() {
     try {
       const response = await fetch("https://backendnost.onrender.com/api/movies/movies");
-      this.movies = await response.json();
+      const data = await response.json();
+      this.movies = data[0].map(movie => ({ // Access the first index
+        ...movie,
+        rating: parseFloat(movie.rating) // Convert the string rating to a float
+      }));
     } catch (error) {
       console.error("Error fetching movies:", error);
     }
