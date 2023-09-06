@@ -9,8 +9,11 @@ import Contact from "@/views/Contact.vue"
 import Admin from "@/views/Admin.vue"
 import Login from "@/views/Login.vue"
 import Register from "@/views/Register.vue"
+
+import store from "@/store" // Import the store
+
 import "bootstrap/dist/css/bootstrap.css"
-import bootstrap from "bootstrap/dist/js/bootstrap.bundle.min.js"
+import "bootstrap/dist/js/bootstrap.bundle"
 
 const routes = [
   {
@@ -59,6 +62,7 @@ const router = createRouter({
 
 const app = createApp(App)
 
+app.use(store) // Use the store
 app.use(router)
 
 app.mount("#app")

@@ -1,12 +1,15 @@
 <template>
   <div id="app">
-    <navbar></navbar>
+    <!-- Only show the navbar if the user is authenticated -->
+    <Navbar v-if="isUserAuthenticated" />
+
     <router-view></router-view>
     <Footer />
   </div>
 </template>
 
 <script>
+import { mapState } from "vuex";
 import Navbar from "@/components/Navbar.vue";
 import Footer from "@/components/Footer.vue";
 
@@ -15,6 +18,13 @@ export default {
   components: {
     Navbar,
     Footer
+  },
+  computed: {
+    ...mapState(['isAuthenticated']),  // map isAuthenticated from store to local computed property
+
+    isUserAuthenticated() {
+      return this.isAuthenticated;
+    }
   }
 };
 </script>

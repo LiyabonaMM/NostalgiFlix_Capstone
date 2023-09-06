@@ -57,7 +57,13 @@ export default {
         const data = await response.json();
 
         if (data.token) {
+          // Storing the token in localStorage
+          localStorage.setItem('authToken', data.token);
+
+          // Authenticate the user
           this.setAuthenticated(true);
+
+          // Redirect the user to the movies page
           this.$router.push({ name: 'movies' });
         } else {
           alert(data.message || 'Error logging in.');

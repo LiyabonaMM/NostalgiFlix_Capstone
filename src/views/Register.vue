@@ -92,20 +92,20 @@ export default {
           body: JSON.stringify(registrationInfo)
         });
 
-        // Logging raw server response for debugging
-        console.log("Server Response:", response);
-
         if (response.status !== 200) {
           throw new Error(`Server responded with status code: ${response.status}`);
         }
 
         const data = await response.json();
 
-        // Logging parsed data for debugging
-        console.log("Parsed JSON Response:", data);
+        if (data.token) {
+          // Store the token in localStorage
+          localStorage.setItem('authToken', data.token);
 
-        if (data.success) {
+          // Authenticate the user
           this.setAuthenticated(true);
+
+          // Redirect the user to the movies page
           this.$router.push({ name: 'movies' });
         } else {
           alert(data.message || 'Error registering the user.');
@@ -118,7 +118,6 @@ export default {
   }
 };
 </script>
-
 <style scoped>
 .register-container {
     font-family: 'Roboto', sans-serif;
