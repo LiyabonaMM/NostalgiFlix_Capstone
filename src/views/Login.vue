@@ -28,6 +28,7 @@
 
 <script>
 import { mapActions } from 'vuex';
+import route from '../router'
 
 export default {
   data() {
@@ -56,6 +57,7 @@ export default {
 
         const data = await response.json();
 
+        console.log(data)
         if (data.token) {
           // Storing the token in localStorage
           localStorage.setItem('authToken', data.token);
@@ -64,13 +66,14 @@ export default {
           this.setAuthenticated(true);
 
           // Redirect the user to the movies page
-          this.$router.push({ name: 'movies' });
+          route.push('/')
         } else {
           alert(data.message || 'Error logging in.');
         }
       } catch (error) {
-        console.error("Error logging in:", error);
+        console.error("Error logging in:", error.message);
         alert('An error occurred while logging in. Please try again.');
+        console.log(route)
       }
     }
   }

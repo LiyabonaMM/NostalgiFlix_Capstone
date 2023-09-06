@@ -67,7 +67,7 @@
         <div class="row mt-4">
           <div class="col-md-4 text-center">
             <img
-              src="https://via.placeholder.com/80"
+              src="https://i.postimg.cc/xCLB3KWb/download.jpg"
               alt="Customer 1"
               class="rounded-circle"
             />
@@ -76,7 +76,7 @@
           </div>
           <div class="col-md-4 text-center">
             <img
-              src="https://via.placeholder.com/80"
+              src="https://i.postimg.cc/xCLB3KWb/download.jpg"
               alt="Customer 2"
               class="rounded-circle"
             />
@@ -85,7 +85,7 @@
           </div>
           <div class="col-md-4 text-center">
             <img
-              src="https://via.placeholder.com/80"
+              src="https://i.postimg.cc/xCLB3KWb/download.jpg"
               alt="Customer 3"
               class="rounded-circle"
             />

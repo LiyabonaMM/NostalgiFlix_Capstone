@@ -1,51 +1,50 @@
 import { createRouter, createWebHistory } from "vue-router"
-import HomeView from "../views/HomeView.vue"
+import Home from "@/views/Home.vue"
+import About from "@/views/About.vue"
+import Movies from "@/views/Movies.vue"
+import Contact from "@/views/Contact.vue"
+import Admin from "@/views/Admin.vue"
+import Login from "@/views/Login.vue"
+import Register from "@/views/Register.vue"
 import store from "@/store" // Assuming this path correctly points to your Vuex store
 
 const routes = [
   {
     path: "/",
-    name: "home",
-    component: HomeView,
-    meta: {
-      requiresAuth: false,
-    },
+    name: "Home",
+    component: Home,
   },
   {
     path: "/about",
-    name: "about",
-    component: () =>
-      import(/* webpackChunkName: "about" */ "../views/AboutView.vue"),
-    meta: {
-      requiresAuth: true, // Assuming you want to protect the about page
-    },
-  },
-  {
-    path: "/register",
-    name: "register",
-    component: () =>
-      import(/* webpackChunkName: "register" */ "../views/Register.vue"),
-    meta: {
-      requiresAuth: false,
-    },
-  },
-  {
-    path: "/login",
-    name: "login",
-    component: () =>
-      import(/* webpackChunkName: "login" */ "../views/Login.vue"),
-    meta: {
-      requiresAuth: false,
-    },
+    name: "About",
+    component: About,
   },
   {
     path: "/movies",
-    name: "movies",
-    component: () =>
-      import(/* webpackChunkName: "movies" */ "../views/Movies.vue"),
-    meta: {
-      requiresAuth: true,
-    },
+    name: "Movies",
+    component: Movies,
+  },
+  {
+    path: "/contact",
+    name: "Contact",
+    component: Contact,
+  },
+  {
+    path: "/admin",
+    name: "Admin",
+    component: Admin,
+    // Optionally add meta field if you want to mark this route for authentication or admin checks.
+    meta: { requiresAuth: true, isAdmin: true },
+  },
+  {
+    path: "/login",
+    name: "Login",
+    component: Login,
+  },
+  {
+    path: "/register",
+    name: "Register",
+    component: Register,
   },
 ]
 
@@ -62,10 +61,16 @@ router.beforeEach((to, from, next) => {
       // Redirect to login if not authenticated
       next({ path: "/login" })
     } else {
-      next()
+      next() // Proceed if authenticated
     }
   } else {
-    next() // If route doesn't require authentication, proceed
+    // For routes that don't require authentication:
+    if (to.path === "/login" && store.state.isAuthenticated) {
+      // If the user is trying to access the login page but is already authenticated
+      next({ path: "/" }) // Redirect to the home page
+    } else {
+      next() // Proceed if the route doesn't require authentication
+    }
   }
 })
 
