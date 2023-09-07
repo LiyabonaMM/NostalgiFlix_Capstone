@@ -4,9 +4,10 @@ import About from "@/views/About.vue"
 import Movies from "@/views/Movies.vue"
 import Contact from "@/views/Contact.vue"
 import Admin from "@/views/Admin.vue"
+import AdminDashboard from "@/views/AdminDashboard.vue" // Fixed this line
 import Login from "@/views/Login.vue"
 import Register from "@/views/Register.vue"
-import store from "@/store" // Assuming this path correctly points to your Vuex store
+import store from "@/store"
 
 const routes = [
   {
@@ -45,6 +46,11 @@ const routes = [
     path: "/register",
     name: "Register",
     component: Register,
+  },
+  {
+    path: "/admin-dashboard",
+    name: "admin-dashboard",
+    component: AdminDashboard,
   },
 ]
 

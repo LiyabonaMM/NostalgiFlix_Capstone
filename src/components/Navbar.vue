@@ -38,10 +38,10 @@
           <router-link to="/admin" class="nav-link">Admin</router-link>
         </li>
         <li class="nav-item">
-          <router-link to="/login" class="nav-link">Login/Register</router-link>
+          <router-link to="/login" class="nav-link"></router-link>
         </li>
         <li class="nav-item ml-auto">
-          <a href="#" class="nav-link">
+          <a href="/src/views/Checkout.vue" class="nav-link">
             <i class="fas fa-shopping-cart"></i>
           </a>
         </li>

@@ -64,6 +64,7 @@ export default {
         const data = await response.json();
         if (data.token) {
           this.authToken = data.token;
+          this.$router.push('/admin-dashboard'); // Redirect to AdminDashboard.vue
         } else {
           this.loginError = "Incorrect email or password.";
         }
