@@ -5,6 +5,10 @@
       <p>Register and dive into our collection of unforgettable movies.</p>
     </div>
 
+    <div v-if="errorMessage" class="alert alert-danger">
+      {{ errorMessage }}
+    </div>
+
     <div class="registration-form mt-5">
       <div class="mb-3">
         <label for="firstName" class="form-label">First Name</label>
@@ -60,7 +64,7 @@
 
 <script>
 import { mapActions } from 'vuex';
-
+import router from '@/router'
 export default {
   data() {
     return {
@@ -68,13 +72,39 @@ export default {
       lastName: '',
       email: '',
       password: '',
-      isAdminCode: ''
+      isAdminCode: '',
+      errorMessage: ''
     };
   },
   methods: {
     ...mapActions(['setAuthenticated']),
 
+    validateForm() {
+      if (!this.firstName || !this.lastName || !this.email || !this.password) {
+        this.errorMessage = "Please fill in all required fields.";
+        return false;
+      }
+
+      const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
+      if (!emailRegex.test(this.email)) {
+        this.errorMessage = "Invalid email format.";
+        return false;
+      }
+
+      if (this.password.length < 8) {
+        this.errorMessage = "Password should be at least 8 characters.";
+        return false;
+      }
+
+      this.errorMessage = '';
+      return true;
+    },
+
     async register() {
+      if (!this.validateForm()) {
+        return;
+      }
+
       const registrationInfo = {
         firstName: this.firstName,
         lastName: this.lastName,
@@ -99,25 +129,21 @@ export default {
         const data = await response.json();
 
         if (data.token) {
-          // Store the token in localStorage
           localStorage.setItem('authToken', data.token);
-
-          // Authenticate the user
           this.setAuthenticated(true);
-
-          // Redirect the user to the movies page
-          this.$router.push({ name: 'movies' });
+          // this.$router.push({ name: '/' });
+          router.push( '/' );
         } else {
-          alert(data.message || 'Error registering the user.');
+          this.errorMessage = data.message || 'Error registering the user.';
         }
       } catch (error) {
-        console.error("Error registering:", error);
-        alert('An error occurred while registering. Please see console for more details.');
+        router.push( '/login' );
       }
     }
   }
 };
 </script>
+
 <style scoped>
 .register-container {
     font-family: 'Roboto', sans-serif;
