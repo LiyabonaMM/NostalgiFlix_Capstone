@@ -45,7 +45,6 @@ function getAuthHeaders(token) {
 export default {
   data() {
     return {
-      authToken: this.$store.state.token,
       adminCredentials: { email: '', password: '' },
       registrationData: {
         firstName: '',
@@ -57,12 +56,9 @@ export default {
       loginError: null
     };
   },
-  watch: {
-    "$store.state.token": {
-      immediate: true,
-      handler(newVal) {
-        this.authToken = newVal;
-      }
+  computed: {
+    authToken() {
+      return this.$store.state.token;
     }
   },
   methods: {
@@ -78,7 +74,6 @@ export default {
         if (data.token) {
           this.$store.commit('SET_TOKEN', data.token);
           this.$store.commit('SET_AUTHENTICATED', true);
-          this.authToken = data.token;
           this.$router.push('/admin-dashboard');
         } else {
           this.loginError = "Incorrect email or password.";

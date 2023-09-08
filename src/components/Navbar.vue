@@ -37,8 +37,13 @@
         <li class="nav-item">
           <router-link to="/admin" class="nav-link">Admin</router-link>
         </li>
-        <li class="nav-item">
-          <router-link to="/login" class="nav-link"></router-link>
+        <li class="nav-item" v-if="!isAuthenticated">
+          <router-link to="/login" class="nav-link">Login</router-link>
+        </li>
+        <li class="nav-item" v-if="isAuthenticated">
+          <a @click="logout" class="nav-link">
+            <i class="fas fa-sign-out-alt"></i> Logout
+          </a>
         </li>
         <li class="nav-item ml-auto">
           <a href="/src/views/Checkout.vue" class="nav-link">
@@ -51,8 +56,20 @@
 </template>
 
 <script>
+import { mapState, mapActions } from 'vuex';
+
 export default {
-  name: 'Navbar'
+  name: 'Navbar',
+  computed: {
+    ...mapState(['isAuthenticated'])
+  },
+  methods: {
+    ...mapActions(['logoutUser']),
+    async logout() {
+      await this.logoutUser(); // Assuming logoutUser returns a promise
+      this.$router.push('/');
+    }
+  }
 };
 </script>
 

@@ -105,10 +105,21 @@ export default {
 </script>
 
 <style scoped>
+.wrapper {
+  background-color: #2c2c2c;
+  min-height: 100vh;
+  padding: 3em;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
 .create-movie {
   padding: 20px;
-  background-color: #f5f5f5;
+  background-color: #333;
   border-radius: 10px;
+  width: 100%;
+  max-width: 600px;
 }
 
 .input-group {
@@ -118,6 +129,7 @@ export default {
 label {
   display: block;
   margin-bottom: 8px;
+  color: #ffffff;
 }
 
 input, textarea {
@@ -125,19 +137,26 @@ input, textarea {
   padding: 10px;
   box-sizing: border-box;
   border-radius: 5px;
-  border: 1px solid #ccc;
+  border: 1px solid #444;
+  background-color: #2c2c2c;
+  color: #fff;
 }
 
 button {
-  background-color: #007BFF;
-  color: white;
+  background-color: gold;
+  color: #333;
   border: none;
   padding: 10px 20px;
   border-radius: 5px;
   cursor: pointer;
+  transition: background-color 0.3s;
 }
 
 button:hover {
-  background-color: #0056b3;
+  background-color: #bbae00;
+}
+
+p {
+  color: #ffffff;
 }
 </style>

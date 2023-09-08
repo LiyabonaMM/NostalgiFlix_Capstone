@@ -84,11 +84,10 @@ export default {
   }
 };
 </script>
-
 <style scoped>
 .admin-movies {
   padding: 20px;
-  background-color: #f5f5f5;
+  background-color: #2c2c2c;
   border-radius: 10px;
 }
 
@@ -98,30 +97,34 @@ export default {
 }
 
 .movie-list li {
-  border-bottom: 1px solid #ccc;
+  border-bottom: 1px solid #444;
   padding: 20px 0;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: #ffffff;
+  background-color: #333;
   margin-bottom: 10px;
   border-radius: 5px;
   box-shadow: 0 2px 10px rgba(0,0,0,0.1);
 }
 
+h2, h3, p {
+  color: #ffffff;
+}
+
 h3 {
   cursor: pointer;
-  color: #007BFF;
+  color: gold;
   transition: color 0.3s;
 }
 
 h3:hover {
-  color: #0056b3;
+  color: #bbae00;
 }
 
 button {
-  background-color: #FF0000;
-  color: white;
+  background-color: gold;
+  color: #333;
   border: none;
   padding: 5px 15px;
   border-radius: 5px;
@@ -130,6 +133,6 @@ button {
 }
 
 button:hover {
-  background-color: #cc0000;
+  background-color: #bbae00;
 }
 </style>

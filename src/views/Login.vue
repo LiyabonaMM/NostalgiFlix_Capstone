@@ -28,7 +28,7 @@
 
 <script>
 import { mapActions } from 'vuex';
-import route from '../router'
+import router from '../router'; // Fixed the typo here from 'route' to 'router'
 
 export default {
   data() {
@@ -57,7 +57,6 @@ export default {
 
         const data = await response.json();
 
-        console.log(data)
         if (data.token) {
           // Storing the token in localStorage
           localStorage.setItem('authToken', data.token);
@@ -65,15 +64,14 @@ export default {
           // Authenticate the user
           this.setAuthenticated(true);
 
-          // Redirect the user to the movies page
-          route.push('/')
+          // Redirect the user to the home page
+          router.push('/');
         } else {
           alert(data.message || 'Error logging in.');
         }
       } catch (error) {
         console.error("Error logging in:", error.message);
         alert('An error occurred while logging in. Please try again.');
-        console.log(route)
       }
     }
   }
