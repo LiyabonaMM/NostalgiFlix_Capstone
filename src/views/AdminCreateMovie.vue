@@ -92,7 +92,7 @@ export default {
         );
 
         if (response.status === 200 || response.status === 201) {
-          this.$router.push('/admin/movies');
+          this.$router.push('');
         } else {
           console.error("Error creating movie:", response.data);
         }
