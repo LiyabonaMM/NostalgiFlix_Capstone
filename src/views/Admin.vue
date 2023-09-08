@@ -38,7 +38,7 @@
 export default {
   data() {
     return {
-      authToken: null,
+      authToken: this.$store.state.token,
       adminCredentials: { email: '', password: '' },
       registrationData: {
         firstName: '',
@@ -63,6 +63,8 @@ export default {
         });
         const data = await response.json();
         if (data.token) {
+          this.$store.commit('SET_TOKEN', data.token);
+          this.$store.commit('SET_AUTHENTICATED', true);
           this.authToken = data.token;
           this.$router.push('/admin-dashboard'); // Redirect to AdminDashboard.vue
         } else {

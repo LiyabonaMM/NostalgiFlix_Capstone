@@ -4,7 +4,7 @@ import About from "@/views/About.vue"
 import Movies from "@/views/Movies.vue"
 import Contact from "@/views/Contact.vue"
 import Admin from "@/views/Admin.vue"
-import AdminDashboard from "@/views/AdminDashboard.vue" // Fixed this line
+import AdminDashboard from "@/views/AdminDashboard.vue"
 import Login from "@/views/Login.vue"
 import Register from "@/views/Register.vue"
 import store from "@/store"
@@ -34,7 +34,6 @@ const routes = [
     path: "/admin",
     name: "Admin",
     component: Admin,
-    // Optionally add meta field if you want to mark this route for authentication or admin checks.
     meta: { requiresAuth: true, isAdmin: true },
   },
   {
@@ -49,8 +48,26 @@ const routes = [
   },
   {
     path: "/admin-dashboard",
-    name: "admin-dashboard",
+    name: "AdminDashboard",
     component: AdminDashboard,
+    children: [
+      {
+        path: "movies",
+        component: () => import("@/views/AdminManageMovies.vue"),
+      },
+      {
+        path: "movies/create",
+        component: () => import("@/views/AdminCreateMovie.vue"),
+      },
+      {
+        path: "movies/edit",
+        component: () => import("@/views/AdminEditMovie.vue"),
+      },
+      {
+        path: "users",
+        component: () => import("@/views/AdminUsers.vue"),
+      },
+    ],
   },
 ]
 
