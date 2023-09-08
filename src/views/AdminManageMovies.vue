@@ -38,13 +38,20 @@ export default {
       return this.$store.state.isAuthenticated;
     }
   },
+  watch: {
+    isAuthenticated(val) {
+      if (!val) {
+        this.$router.push("/admin");
+      }
+    }
+  },
   async created() {
     if (this.isAuthenticated) {
       try {
         const response = await fetch("https://backendnost.onrender.com/api/movies/movies");
         if (!response.ok) throw new Error("Failed to fetch movies");
         const data = await response.json();
-        this.movies = data[0]; // Assuming data is wrapped in an additional array based on the provided response.
+        this.movies = data[0];  // Adjusted to properly extract the movies array from the nested array
       } catch (err) {
         console.error(err);
       }
@@ -58,7 +65,7 @@ export default {
         });
 
         if (response.ok) {
-          this.movies = this.movies.filter(movie => movie.id !== movieId);  // Update movies list
+          this.movies = this.movies.filter(movie => movie.id !== movieId);
         } else {
           throw new Error("Failed to delete the movie");
         }
@@ -67,7 +74,7 @@ export default {
       }
     },
     editMovie(movieId) {
-      this.$router.push({ path: `/admin/movies/edit/${movieId}` });  // Redirect to edit movie page with the movie's ID
+      this.$router.push({ path: `/admin/movies/edit/${movieId}` });
     }
   }
 };

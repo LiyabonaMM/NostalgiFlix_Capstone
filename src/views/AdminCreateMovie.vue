@@ -54,6 +54,13 @@
 <script>
 import axios from 'axios';
 
+function getAuthHeaders(token) {
+  return {
+    "Content-Type": "application/json",
+    "Authorization": `Bearer ${token}`
+  };
+}
+
 export default {
   data() {
     return {
@@ -70,15 +77,22 @@ export default {
   computed: {
     isAuthenticated() {
       return this.$store.state.isAuthenticated;
+    },
+    authToken() {
+      return this.$store.state.token;
     }
   },
   methods: {
     async createMovie() {
       try {
-        const response = await axios.post('https://backendnost.onrender.com/api/movies/movie', this.movie);
+        const response = await axios.post(
+          'https://backendnost.onrender.com/api/movies/movie',
+          this.movie,
+          { headers: getAuthHeaders(this.authToken) } // Add headers using the helper function
+        );
 
         if (response.status === 200 || response.status === 201) {
-          this.$router.push('/admin/movies'); // Navigate back to movies list after successful creation
+          this.$router.push('/admin/movies');
         } else {
           console.error("Error creating movie:", response.data);
         }

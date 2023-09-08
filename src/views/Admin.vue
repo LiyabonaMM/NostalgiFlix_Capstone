@@ -35,6 +35,13 @@
 </template>
 
 <script>
+function getAuthHeaders(token) {
+  return {
+    "Content-Type": "application/json",
+    "Authorization": `Bearer ${token}`
+  };
+}
+
 export default {
   data() {
     return {
@@ -50,15 +57,21 @@ export default {
       loginError: null
     };
   },
+  watch: {
+    "$store.state.token": {
+      immediate: true,
+      handler(newVal) {
+        this.authToken = newVal;
+      }
+    }
+  },
   methods: {
     async signInAsAdmin() {
       this.loginError = null;
       try {
         const response = await fetch("https://backendnost.onrender.com/api/users/login", {
           method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
+          headers: { "Content-Type": "application/json" }, // login does not need token
           body: JSON.stringify(this.adminCredentials)
         });
         const data = await response.json();
@@ -66,7 +79,7 @@ export default {
           this.$store.commit('SET_TOKEN', data.token);
           this.$store.commit('SET_AUTHENTICATED', true);
           this.authToken = data.token;
-          this.$router.push('/admin-dashboard'); // Redirect to AdminDashboard.vue
+          this.$router.push('/admin-dashboard');
         } else {
           this.loginError = "Incorrect email or password.";
         }
@@ -77,13 +90,12 @@ export default {
     },
     async registerUser() {
       try {
-        await fetch("https://backendnost.onrender.com/api/users/register", {
+        const response = await fetch("https://backendnost.onrender.com/api/users/register", {
           method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
+          headers: getAuthHeaders(this.$store.state.token), // use the helper function here
           body: JSON.stringify(this.registrationData)
         });
+        if (response.status !== 201) throw new Error("Registration failed");
         alert('User registered successfully.');
       } catch (error) {
         console.error("Error registering:", error);

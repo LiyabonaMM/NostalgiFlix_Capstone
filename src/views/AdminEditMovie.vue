@@ -72,6 +72,13 @@ export default {
       return this.$store.state.isAuthenticated;
     }
   },
+  watch: {
+    isAuthenticated(val) {
+      if (!val) {
+        this.$router.push("/admin");  // Redirect back to Admin login if not authenticated
+      }
+    }
+  },
   async created() {
     if (this.isAuthenticated) {
       const movieId = this.$route.params.id;

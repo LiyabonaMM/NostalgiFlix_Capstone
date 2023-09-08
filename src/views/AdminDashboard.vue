@@ -1,5 +1,5 @@
 <template>
-  <div class="admin-dashboard">
+  <div v-if="isAuthenticated" class="admin-dashboard">
     <h1>Admin Dashboard</h1>
 
     <!-- Navigation Links -->
@@ -15,11 +15,26 @@
     <!-- Display the Components -->
     <router-view></router-view>
   </div>
+  <div v-else>
+    <p>You are not authenticated. Please log in first.</p>
+  </div>
 </template>
 
 <script>
 export default {
-  name: 'AdminDashboard'
+  name: 'AdminDashboard',
+  computed: {
+    isAuthenticated() {
+      return this.$store.state.isAuthenticated;
+    }
+  },
+  watch: {
+    isAuthenticated(val) {
+      if (!val) {
+        this.$router.push("/admin");  // Redirect back to Admin login if not authenticated
+      }
+    }
+  }
 }
 </script>
 
