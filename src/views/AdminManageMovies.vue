@@ -27,6 +27,8 @@
 </template>
 
 <script>
+import axios from 'axios';
+
 export default {
   data() {
     return {
@@ -36,6 +38,9 @@ export default {
   computed: {
     isAuthenticated() {
       return this.$store.state.isAuthenticated;
+    },
+    authToken() {
+      return this.$store.state.token;
     }
   },
   watch: {
@@ -48,10 +53,8 @@ export default {
   async created() {
     if (this.isAuthenticated) {
       try {
-        const response = await fetch("https://backendnost.onrender.com/api/movies/movies");
-        if (!response.ok) throw new Error("Failed to fetch movies");
-        const data = await response.json();
-        this.movies = data[0];  // Adjusted to properly extract the movies array from the nested array
+        const response = await axios.get("https://backendnost.onrender.com/api/movies/movies");
+        this.movies = response.data[0];  // Assuming movies data is nested in an array
       } catch (err) {
         console.error(err);
       }
@@ -60,17 +63,19 @@ export default {
   methods: {
     async deleteMovie(movieId) {
       try {
-        const response = await fetch(`https://backendnost.onrender.com/api/movies/movies/${movieId}`, {
-          method: "DELETE",
+        const response = await axios.delete(`https://backendnost.onrender.com/api/movies/movie/${movieId}`, {
+          headers: {
+            "Authorization": `Bearer ${this.authToken}`
+          }
         });
 
-        if (response.ok) {
+        if (response.status === 200 || response.status === 204) {
           this.movies = this.movies.filter(movie => movie.id !== movieId);
         } else {
-          throw new Error("Failed to delete the movie");
+          console.error("Error deleting movie:", response.data);
         }
       } catch (err) {
-        console.error(err);
+        console.error("Error deleting movie:", err);
       }
     },
     editMovie(movieId) {
