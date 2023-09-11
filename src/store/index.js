@@ -1,3 +1,4 @@
+import Vue from "vue"
 import { createStore } from "vuex"
 
 export default createStore({
@@ -38,10 +39,11 @@ export default createStore({
       const foundItem = state.cart.find((cartItem) => cartItem.id === item.id)
       if (foundItem && foundItem.quantity > 1) {
         foundItem.quantity--
-      } else {
+      } else if (foundItem && foundItem.quantity <= 1) {
         state.cart = state.cart.filter((cartItem) => cartItem.id !== item.id)
       }
     },
+
     REMOVE_FROM_CART(state, item) {
       state.cart = state.cart.filter((cartItem) => cartItem.id !== item.id)
     },

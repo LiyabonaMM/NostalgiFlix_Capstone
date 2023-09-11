@@ -3,7 +3,7 @@
     <h1>Your Cart</h1>
 
     <!-- Display a message if the cart is empty -->
-    <div v-if="cartCount === 0">Your cart is empty.</div>
+    <div v-if="cart.length === 0">Your cart is empty.</div>
 
     <!-- Display cart items if present -->
     <div v-else>
@@ -29,28 +29,24 @@
 </template>
 
 <script>
-import { mapState, mapMutations } from 'vuex';
+import { mapState } from 'vuex';
 
 export default {
   computed: {
     ...mapState(['cart']),
-    cartCount() {
-      return this.cart.length;
-    },
     totalAmount() {
       return this.cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
     }
   },
   methods: {
-    ...mapMutations(['increaseItemQuantity', 'decreaseItemQuantity', 'removeFromCart']),
     increaseQuantity(item) {
-      this.increaseItemQuantity(item);
+      this.$store.commit('INCREASE_ITEM_QUANTITY', item);
     },
     decreaseQuantity(item) {
-      this.decreaseItemQuantity(item);
+      this.$store.commit('DECREASE_ITEM_QUANTITY', item);
     },
     removeItem(item) {
-      this.removeFromCart(item);
+      this.$store.commit('REMOVE_FROM_CART', item);
     }
   }
 };
