@@ -39,4 +39,12 @@ export default {
 Footer {
   margin-top: auto;
 }
+
+.content {
+  margin-top: 80px;
+}
+
+.hidden {
+  display: none;
+}
 </style>

@@ -4,6 +4,7 @@ import router from "@/router"
 import store from "@/store" // Import the store
 import "bootstrap/dist/css/bootstrap.css"
 import "bootstrap/dist/js/bootstrap.bundle"
+import "./store/global.css"
 
 const app = createApp(App)
 

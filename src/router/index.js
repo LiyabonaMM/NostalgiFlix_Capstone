@@ -1,13 +1,14 @@
-import { createRouter, createWebHistory } from "vue-router";
-import Home from "@/views/Home.vue";
-import About from "@/views/About.vue";
-import Movies from "@/views/Movies.vue";
-import Contact from "@/views/Contact.vue";
-import Admin from "@/views/Admin.vue";
-import AdminDashboard from "@/views/AdminDashboard.vue";
-import Login from "@/views/Login.vue";
-import Register from "@/views/Register.vue";
-import store from "@/store";
+import { createRouter, createWebHistory } from "vue-router"
+import Home from "@/views/Home.vue"
+import About from "@/views/About.vue"
+import Movies from "@/views/Movies.vue"
+import Contact from "@/views/Contact.vue"
+import Admin from "@/views/Admin.vue"
+import AdminDashboard from "@/views/AdminDashboard.vue"
+import Login from "@/views/Login.vue"
+import Register from "@/views/Register.vue"
+import Checkout from "@/views/Checkout.vue"
+import store from "@/store"
 
 const routes = [
   {
@@ -69,27 +70,27 @@ const routes = [
       },
     ],
   },
-];
+]
 
 const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
   routes,
-});
+})
 
 router.beforeEach((to, from, next) => {
   if (to.matched.some((record) => record.meta.requiresAuth)) {
     if (!store.state.isAuthenticated) {
-      next({ path: "/login" });
+      next({ path: "/login" })
     } else {
-      next();
+      next()
     }
   } else {
     if (to.path === "/login" && store.state.isAuthenticated) {
-      next({ path: "/" });
+      next({ path: "/" })
     } else {
-      next();
+      next()
     }
   }
-});
+})
 
-export default router;
+export default router
