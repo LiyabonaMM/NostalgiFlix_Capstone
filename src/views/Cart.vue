@@ -22,7 +22,7 @@
       </div>
       <div class="cart-total">
         Total: R{{ totalAmount }}
-        <button class="checkout-btn">Checkout</button>
+        <button class="checkout-btn" @click="goToCheckout">Checkout</button>
       </div>
     </div>
   </div>
@@ -47,6 +47,9 @@ export default {
     },
     removeItem(item) {
       this.$store.commit('REMOVE_FROM_CART', item);
+    },
+    goToCheckout() {
+      this.$router.push('/checkout');
     }
   }
 };

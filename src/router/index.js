@@ -8,6 +8,7 @@ import AdminDashboard from "@/views/AdminDashboard.vue"
 import Login from "@/views/Login.vue"
 import Register from "@/views/Register.vue"
 import Checkout from "@/views/Checkout.vue"
+import ThankYou from "@/views/ThankYou.vue"
 import store from "@/store"
 
 const routes = [
@@ -51,6 +52,16 @@ const routes = [
     path: "/cart",
     name: "Cart",
     component: () => import("@/views/Cart.vue"),
+  },
+  {
+    path: "/checkout",
+    name: "Checkout",
+    component: Checkout,
+  },
+  {
+    path: "/thank-you",
+    name: "ThankYou",
+    component: ThankYou,
   },
 
   {
