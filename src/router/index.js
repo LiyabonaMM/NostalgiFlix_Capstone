@@ -1,13 +1,13 @@
-import { createRouter, createWebHistory } from "vue-router"
-import Home from "@/views/Home.vue"
-import About from "@/views/About.vue"
-import Movies from "@/views/Movies.vue"
-import Contact from "@/views/Contact.vue"
-import Admin from "@/views/Admin.vue"
-import AdminDashboard from "@/views/AdminDashboard.vue"
-import Login from "@/views/Login.vue"
-import Register from "@/views/Register.vue"
-import store from "@/store"
+import { createRouter, createWebHistory } from "vue-router";
+import Home from "@/views/Home.vue";
+import About from "@/views/About.vue";
+import Movies from "@/views/Movies.vue";
+import Contact from "@/views/Contact.vue";
+import Admin from "@/views/Admin.vue";
+import AdminDashboard from "@/views/AdminDashboard.vue";
+import Login from "@/views/Login.vue";
+import Register from "@/views/Register.vue";
+import store from "@/store";
 
 const routes = [
   {
@@ -69,32 +69,27 @@ const routes = [
       },
     ],
   },
-]
+];
 
 const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
   routes,
-})
+});
 
 router.beforeEach((to, from, next) => {
-  // Check if the route requires authentication
   if (to.matched.some((record) => record.meta.requiresAuth)) {
-    // Check if user is authenticated
     if (!store.state.isAuthenticated) {
-      // Redirect to login if not authenticated
-      next({ path: "/login" })
+      next({ path: "/login" });
     } else {
-      next() // Proceed if authenticated
+      next();
     }
   } else {
-    // For routes that don't require authentication:
     if (to.path === "/login" && store.state.isAuthenticated) {
-      // If the user is trying to access the login page but is already authenticated
-      next({ path: "/" }) // Redirect to the home page
+      next({ path: "/" });
     } else {
-      next() // Proceed if the route doesn't require authentication
+      next();
     }
   }
-})
+});
 
-export default router
+export default router;
