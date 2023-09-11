@@ -12,7 +12,7 @@
             v-for="n in 5"
             :key="n"
             class="fa"
-            :class="n <= Math.floor(movie.rating) ? 'fa-star' : 'fa-star-o'"
+            :class="n <= Math.round(movie.rating) ? (n > movie.rating ? 'fa-star-half-o' : 'fa-star') : 'fa-star-o'"
           ></i>
         </div>
         <p class="movie-price">R{{ movie.price }}</p>
@@ -45,7 +45,7 @@ export default {
       try {
         const response = await fetch(`https://backendnost.onrender.com/api/movies/movie/${id}`);
         const data = await response.json();
-        this.movie = data[0][0]; // Modified line to correctly extract the movie data
+        this.movie = data[0][0];
       } catch (error) {
         console.error("Error fetching movie:", error);
       }

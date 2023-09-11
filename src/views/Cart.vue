@@ -13,11 +13,13 @@
           <div class="cart-title">{{ item.title }}</div>
           <div class="cart-price">R{{ item.price * item.quantity }}</div>
           <div class="cart-quantity-control">
-            <button @click="decreaseQuantity(item)">-</button>
+            <button @click="decreaseItemQuantity(item)">-</button>
             {{ item.quantity }}
-            <button @click="increaseQuantity(item)">+</button>
+            <button @click="increaseItemQuantity(item)">+</button>
           </div>
-          <button @click="removeItem(item)" class="remove-btn">Remove</button>
+          <button @click="removeFromCart(item)" class="remove-btn">
+            Remove
+          </button>
         </div>
       </div>
       <div class="cart-total">
@@ -29,7 +31,7 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex'; // Imported mapActions to simplify action dispatching
+import { mapState, mapActions } from 'vuex';
 
 export default {
   computed: {
@@ -39,7 +41,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions([  // Used mapActions to simplify action dispatching
+    ...mapActions([
       'increaseItemQuantity',
       'decreaseItemQuantity',
       'removeFromCart'
