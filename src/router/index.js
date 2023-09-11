@@ -48,6 +48,12 @@ const routes = [
     component: Register,
   },
   {
+    path: "/cart",
+    name: "Cart",
+    component: () => import("@/views/Cart.vue"),
+  },
+
+  {
     path: "/admin-dashboard",
     name: "AdminDashboard",
     component: AdminDashboard,

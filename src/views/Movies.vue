@@ -29,7 +29,12 @@
               </div>
               <p class="movie-price">R{{ movie.price }}</p>
               <div class="mt-3">
-                <button class="btn btn-primary btn-block">Add to Cart</button>
+                <button
+                  @click="handleAddToCart(movie)"
+                  class="btn btn-primary btn-block"
+                >
+                  Add to Cart
+                </button>
               </div>
             </div>
           </div>
@@ -40,12 +45,21 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex';
+
 export default {
   name: "Movies",
   data() {
     return {
       movies: [],
     };
+  },
+  methods: {
+    ...mapActions(['addToCart']),
+
+    handleAddToCart(movie) {
+      this.addToCart(movie);
+    }
   },
   async created() {
     try {

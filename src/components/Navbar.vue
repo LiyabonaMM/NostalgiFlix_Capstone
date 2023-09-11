@@ -40,6 +40,17 @@
         </li>
       </ul>
       <ul class="navbar-nav">
+        <!-- Cart Icon and Counter -->
+        <li class="nav-item">
+          <router-link to="/cart" class="nav-link">
+            <i class="fa fa-shopping-cart"></i>
+            <span
+              v-if="cartItemCount"
+              class="cart-counter"
+              >{{ cartItemCount }}</span
+            >
+          </router-link>
+        </li>
         <li class="nav-item" v-if="isAuthenticated">
           <a class="nav-link" @click="performLogout">Logout</a>
         </li>
@@ -49,11 +60,12 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex';
+import { mapState, mapActions, mapGetters } from 'vuex';
 
 export default {
   computed: {
     ...mapState(['isAuthenticated']),
+    ...mapGetters(['cartItemCount']),  // Ensure you have this getter in your Vuex store
   },
   methods: {
     ...mapActions(['logout']),
@@ -68,5 +80,20 @@ export default {
 <style scoped>
 .navbar {
     font-family: 'Arial', sans-serif;
+
+}
+
+.cart-counter {
+    background-color: red;
+    border-radius: 50%;
+    padding: 2px 8px;
+    font-size: 12px;
+    margin-left: 5px;
+    vertical-align: middle;
+    color: white;
+}
+
+.fa-shopping-cart {
+    font-size: 24px;
 }
 </style>
