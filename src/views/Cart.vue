@@ -29,7 +29,7 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
+import { mapState, mapActions } from 'vuex'; // Imported mapActions to simplify action dispatching
 
 export default {
   computed: {
@@ -39,15 +39,11 @@ export default {
     }
   },
   methods: {
-    increaseQuantity(item) {
-      this.$store.commit('INCREASE_ITEM_QUANTITY', item);
-    },
-    decreaseQuantity(item) {
-      this.$store.commit('DECREASE_ITEM_QUANTITY', item);
-    },
-    removeItem(item) {
-      this.$store.commit('REMOVE_FROM_CART', item);
-    },
+    ...mapActions([  // Used mapActions to simplify action dispatching
+      'increaseItemQuantity',
+      'decreaseItemQuantity',
+      'removeFromCart'
+    ]),
     goToCheckout() {
       this.$router.push('/checkout');
     }
@@ -138,5 +134,13 @@ h1 {
   border: none;
   padding: 5px 10px;
   cursor: pointer;
+}
+.user-id-info {
+  background-color: rgba(255, 255, 255, 0.1);
+  padding: 10px;
+  border-radius: 4px;
+  margin-bottom: 20px;
+  color: #FFD700;
+  font-weight: bold;
 }
 </style>

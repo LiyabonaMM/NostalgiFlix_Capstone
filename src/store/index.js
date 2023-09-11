@@ -1,11 +1,12 @@
-import Vue from "vue"
 import { createStore } from "vuex"
+import jwtDecode from "jwt-decode"
 
 export default createStore({
   state: {
     isAuthenticated: false,
     token: null,
-    cart: [], // The cart items will be stored in an array
+    cart: [],
+    userId: null, // Added the userId state.
   },
 
   mutations: {
@@ -20,14 +21,14 @@ export default createStore({
         (cartItem) => cartItem.id === item.id
       )
       if (existingItem) {
-        existingItem.quantity++ // Increase quantity if item already exists in cart
+        existingItem.quantity++
       } else {
-        item.quantity = 1 // Add a quantity property for new items
+        item.quantity = 1
         state.cart.push(item)
       }
     },
     CLEAR_CART(state) {
-      state.cart = [] // Empty the cart
+      state.cart = []
     },
     INCREASE_ITEM_QUANTITY(state, item) {
       const foundItem = state.cart.find((cartItem) => cartItem.id === item.id)
@@ -43,9 +44,11 @@ export default createStore({
         state.cart = state.cart.filter((cartItem) => cartItem.id !== item.id)
       }
     },
-
     REMOVE_FROM_CART(state, item) {
       state.cart = state.cart.filter((cartItem) => cartItem.id !== item.id)
+    },
+    SET_USER_ID(state, userId) {
+      state.userId = userId
     },
   },
 
@@ -56,6 +59,14 @@ export default createStore({
     },
     setToken({ commit }, token) {
       commit("SET_TOKEN", token)
+
+      if (token) {
+        const decoded = jwtDecode(token)
+        commit("SET_USER_ID", decoded.userId) // Assuming your token payload has a userId field.
+      } else {
+        commit("SET_USER_ID", null)
+      }
+
       localStorage.setItem("token", token)
     },
     addToCart({ commit }, item) {
@@ -88,13 +99,16 @@ export default createStore({
       }
       if (localStorage.getItem("token")) {
         commit("SET_TOKEN", localStorage.getItem("token"))
+        const decoded = jwtDecode(localStorage.getItem("token"))
+        commit("SET_USER_ID", decoded.userId) // Decode user ID when initializing the store.
       }
     },
   },
 
   getters: {
-    cartItemCount: (state) => state.cart.length, // Returns the number of items in the cart
+    cartItemCount: (state) => state.cart.length,
     cartTotalPrice: (state) =>
-      state.cart.reduce((sum, item) => sum + item.price * item.quantity, 0), // Returns the total cart value
+      state.cart.reduce((sum, item) => sum + item.price * item.quantity, 0),
+    userId: (state) => state.userId,
   },
 })

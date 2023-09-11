@@ -14,7 +14,14 @@
         >
           <div class="card">
             <div class="card-header">
-              <img :src="movie.imageUrl" alt="Movie Poster" class="card-img" />
+              <!-- Added router-link to navigate to MovieDetails with movie ID -->
+              <router-link :to="`/movie/${movie.id}`">
+                <img
+                  :src="movie.imageUrl"
+                  alt="Movie Poster"
+                  class="card-img"
+                />
+              </router-link>
             </div>
             <div class="card-body">
               <h5 class="card-title">{{ movie.title }}</h5>

@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from "vue-router"
 import Home from "@/views/Home.vue"
 import About from "@/views/About.vue"
 import Movies from "@/views/Movies.vue"
+import MovieDetails from "@/views/MovieDetails.vue"
 import Contact from "@/views/Contact.vue"
 import Admin from "@/views/Admin.vue"
 import AdminDashboard from "@/views/AdminDashboard.vue"
@@ -26,6 +27,11 @@ const routes = [
     path: "/movies",
     name: "Movies",
     component: Movies,
+  },
+  {
+    path: "/movie/:id", // Dynamic route for movie details
+    name: "MovieDetails",
+    component: MovieDetails,
   },
   {
     path: "/contact",
