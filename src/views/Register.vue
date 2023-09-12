@@ -8,6 +8,9 @@
     <div v-if="errorMessage" class="alert alert-danger">
       {{ errorMessage }}
     </div>
+    <div v-if="isLoading" class="spinner-container">
+      <div class="spinner"></div>
+    </div>
 
     <div class="registration-form mt-5">
       <div class="mb-3">

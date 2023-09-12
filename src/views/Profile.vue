@@ -25,6 +25,9 @@
         <p><strong>Email:</strong> {{ profile.email }}</p>
         <p v-if="profile.isAdmin"><strong>Role:</strong> Admin</p>
       </div>
+      <button @click="promptDeleteProfile" class="btn btn-danger mt-3">
+        Delete Profile
+      </button>
     </div>
 
     <!-- If there's an error -->
@@ -73,7 +76,36 @@ export default {
       } finally {
         this.loading = false;
       }
+    },
+    promptDeleteProfile() {
+      const confirmed = window.confirm("Are you sure you want to delete your profile? This action cannot be undone.");
+      if (confirmed) {
+        this.deleteProfile();
+      }
+    },
+    async deleteProfile() {
+  this.loading = true;
+  try {
+    const response = await fetch("https://backendnost.onrender.com/api/users/delete", {
+      method: 'DELETE',
+      headers: {
+        'Authorization': 'Bearer ' + this.token
+      }
+    });
+    if(response.ok) {
+      localStorage.removeItem('authToken');
+      this.$store.commit('setAuthenticated', false);  // Assuming you're using Vuex to manage state
+      router.push('/'); // Redirect to the home page
+    } else {
+      const errorData = await response.json();
+      throw new Error(errorData.message || 'Failed to delete profile.');
     }
+  } catch (error) {
+    this.error = error.message;
+  } finally {
+    this.loading = false;
+  }
+}
   }
 };
 </script>
@@ -113,9 +145,7 @@ h1 {
   margin-top: 10px;
 }
 
-.btn-gold {
-  background-color: gold;
-  color: black;
+.btn-gold, .btn-danger {
   font-weight: bold;
   border: none;
   transition: background-color 0.3s;
@@ -123,8 +153,24 @@ h1 {
   border-radius: 5px;
 }
 
+.btn-gold {
+  background-color: gold;
+  color: black;
+}
+
 .btn-gold:hover {
   background-color: #FFD700;
   color: black;
+}
+
+.btn-danger {
+  background-color: red;
+  color: white;
+  margin-top: 10px;
+}
+
+.btn-danger:hover {
+  background-color: darkred;
+  color: white;
 }
 </style>

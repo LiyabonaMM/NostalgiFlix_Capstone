@@ -63,29 +63,29 @@
         <div class="row mt-4">
           <div class="col-md-4 text-center">
             <img
-              src="https://i.postimg.cc/xCLB3KWb/download.jpg"
+              src="https://i.postimg.cc/d0ct4Y0j/12.png"
               alt="Customer 1"
               class="rounded-circle"
             />
-            <h5>Jane Doe</h5>
+            <h5>Marcel Brown</h5>
             <p>"This platform brings back so many memories. I love it!"</p>
           </div>
           <div class="col-md-4 text-center">
             <img
-              src="https://i.postimg.cc/xCLB3KWb/download.jpg"
+              src="https://i.postimg.cc/xCbw7kFk/zuzu.png"
               alt="Customer 2"
               class="rounded-circle"
             />
-            <h5>John Smith</h5>
+            <h5>Zulaigaih Benjamin</h5>
             <p>"Amazing collection. Takes me right back to my childhood."</p>
           </div>
           <div class="col-md-4 text-center">
             <img
-              src="https://i.postimg.cc/xCLB3KWb/download.jpg"
+              src="https://i.postimg.cc/8cfLLGcg/zubai.png"
               alt="Customer 3"
               class="rounded-circle"
             />
-            <h5>Emily Clark</h5>
+            <h5>Zubair Mathew</h5>
             <p>"Finally, a place where I can relive the classics."</p>
           </div>
         </div>

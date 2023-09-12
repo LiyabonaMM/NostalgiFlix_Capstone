@@ -11,24 +11,6 @@
       />
       <p v-if="loginError" class="error-message">{{ loginError }}</p>
       <button @click="signInAsAdmin">Sign In</button>
-
-      <!-- Registration Section -->
-      <div class="register-section">
-        <h3>Register New User</h3>
-        <input v-model="registrationData.firstName" placeholder="First Name" />
-        <input v-model="registrationData.lastName" placeholder="Last Name" />
-        <input v-model="registrationData.email" placeholder="Email" />
-        <input
-          type="password"
-          v-model="registrationData.password"
-          placeholder="Password"
-        />
-        <input
-          v-model="registrationData.isAdminCode"
-          placeholder="Admin Code (if registering as admin)"
-        />
-        <button @click="registerUser">Register</button>
-      </div>
     </div>
     <!-- If already logged in, you can have sections for Movie and User management here... -->
   </div>
@@ -46,13 +28,6 @@ export default {
   data() {
     return {
       adminCredentials: { email: '', password: '' },
-      registrationData: {
-        firstName: '',
-        lastName: '',
-        email: '',
-        password: '',
-        isAdminCode: ''
-      },
       loginError: null
     };
   },
@@ -63,39 +38,29 @@ export default {
   },
   methods: {
     async signInAsAdmin() {
-      this.loginError = null;
-      try {
-        const response = await fetch("https://backendnost.onrender.com/api/users/login", {
-          method: 'POST',
-          headers: { "Content-Type": "application/json" }, // login does not need token
-          body: JSON.stringify(this.adminCredentials)
-        });
-        const data = await response.json();
-        if (data.token) {
-          this.$store.commit('SET_TOKEN', data.token);
-          this.$store.commit('SET_AUTHENTICATED', true);
-          this.$router.push('/admin-dashboard');
-        } else {
-          this.loginError = "Incorrect email or password.";
-        }
-      } catch (error) {
-        console.error("Error logging in:", error);
-        this.loginError = "Error occurred while logging in.";
-      }
-    },
-    async registerUser() {
-      try {
-        const response = await fetch("https://backendnost.onrender.com/api/users/register", {
-          method: 'POST',
-          headers: getAuthHeaders(this.$store.state.token), // use the helper function here
-          body: JSON.stringify(this.registrationData)
-        });
-        if (response.status !== 201) throw new Error("Registration failed");
-        alert('User registered successfully.');
-      } catch (error) {
-        console.error("Error registering:", error);
-      }
+  this.loginError = null;
+  try {
+    const response = await fetch("https://backendnost.onrender.com/api/users/login", {
+      method: 'POST',
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(this.adminCredentials)
+    });
+    const data = await response.json();
+
+    if (data.token && data.user.isAdmin === 1) {  // Check if the user is an admin
+      this.$store.commit('SET_TOKEN', data.token);
+      this.$store.commit('SET_AUTHENTICATED', true);
+      this.$router.push('/admin-dashboard');
+    } else if (data.token) { // User is authenticated but not an admin
+      this.loginError = "You are not authorized to access the admin dashboard.";
+    } else {
+      this.loginError = "Incorrect email or password.";
     }
+  } catch (error) {
+    console.error("Error logging in:", error);
+    this.loginError = "Error occurred while logging in.";
+  }
+}
   }
 };
 </script>
@@ -138,12 +103,6 @@ button {
 
 button:hover {
   background-color: #bbae00;
-}
-
-.register-section {
-  margin-top: 3em;
-  border-top: 1px solid #444;
-  padding-top: 3em;
 }
 
 .error-message {
