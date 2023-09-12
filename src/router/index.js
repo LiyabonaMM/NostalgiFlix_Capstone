@@ -5,6 +5,7 @@ import Movies from "@/views/Movies.vue"
 import MovieDetails from "@/views/MovieDetails.vue"
 import Contact from "@/views/Contact.vue"
 import Admin from "@/views/Admin.vue"
+import Profile from "@/views/Profile.vue"
 import AdminDashboard from "@/views/AdminDashboard.vue"
 import Login from "@/views/Login.vue"
 import Register from "@/views/Register.vue"
@@ -43,6 +44,11 @@ const routes = [
     name: "Admin",
     component: Admin,
     meta: { requiresAuth: true, isAdmin: true },
+  },
+  {
+    path: "/profile",
+    name: "Profile",
+    component: Profile,
   },
   {
     path: "/login",

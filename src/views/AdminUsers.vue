@@ -2,33 +2,34 @@
   <div class="admin-users">
     <div v-if="isAuthenticated">
       <h3>Manage Users</h3>
-      <table>
-        <thead>
-          <tr>
-            <th>First Name</th>
-            <th>Last Name</th>
-            <th>Email</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="user in users" :key="user.id">
-            <td>{{ user.firstName }}</td>
-            <td>{{ user.lastName }}</td>
-            <td>{{ user.email }}</td>
-            <td>
-              <button @click="deleteUser(user.id)">Delete</button>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+      <div class="table-wrapper">
+        <table>
+          <thead>
+            <tr>
+              <th>First Name</th>
+              <th>Last Name</th>
+              <th>Email</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="user in users" :key="user.id">
+              <td>{{ user.firstName }}</td>
+              <td>{{ user.lastName }}</td>
+              <td>{{ user.email }}</td>
+              <td>
+                <button @click="deleteUser(user.id)">Delete</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
     <div v-else>
       <p>You are not authenticated. Please log in first.</p>
     </div>
   </div>
 </template>
-
 <script>
 import axios from 'axios';
 
@@ -82,28 +83,89 @@ export default {
 <style scoped>
 .admin-users {
   padding: 20px;
+  font-family: 'Arial', sans-serif;
+}
+
+.table-wrapper {
+  overflow-x: auto;
 }
 
 table {
   width: 100%;
   border-collapse: collapse;
+  background-color: black;
+  border-radius: 8px;
+  box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
 }
 
 th, td {
   padding: 10px;
-  border: 1px solid #ccc;
+  border-bottom: 1px solid #ccc;
+  text-align: left;
+}
+
+thead th {
+  background-color: #333;
+  color: white;
+}
+
+tbody tr:hover {
+  background-color: goldenrod;
+}
+
+tbody tr:last-child td {
+  border-bottom: none;
 }
 
 button {
-  background-color: #FF0000;  /* Red color for delete button */
+  background-color: #FF0000;
   color: white;
   border: none;
   padding: 5px 10px;
   border-radius: 5px;
   cursor: pointer;
+  transition: background-color 0.3s ease;
 }
 
 button:hover {
-  background-color: #cc0000;  /* Darker red on hover */
+  background-color: #cc0000;
+}
+
+@media only screen and (max-width: 768px) {
+  table, thead, tbody, th, td, tr {
+    display: block;
+  }
+
+  thead tr {
+    position: absolute;
+    top: -9999px;
+    left: -9999px;
+  }
+
+  tbody tr {
+    margin: 0 0 1rem 0;
+    border-bottom: none;
+  }
+
+  td {
+    border: none;
+    position: relative;
+    padding-left: 50%;
+  }
+
+  td:before {
+    content: attr(data-label);
+    position: absolute;
+    left: 0;
+    width: 50%;
+    padding-left: 15px;
+    font-weight: bold;
+    white-space: nowrap;
+  }
+
+  td:nth-of-type(1):before { content: "First Name"; }
+  td:nth-of-type(2):before { content: "Last Name"; }
+  td:nth-of-type(3):before { content: "Email"; }
+  td:nth-of-type(4):before { content: "Actions"; }
 }
 </style>

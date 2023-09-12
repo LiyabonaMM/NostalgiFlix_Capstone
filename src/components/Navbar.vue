@@ -9,7 +9,6 @@
         class="d-inline-block align-top"
       />
     </a>
-    <!-- Corrected data attributes here -->
     <button
       class="navbar-toggler"
       type="button"
@@ -37,6 +36,9 @@
         </li>
         <li class="nav-item">
           <router-link to="/admin" class="nav-link">Admin</router-link>
+        </li>
+        <li class="nav-item">
+          <router-link to="/profile" class="nav-link">Profile</router-link>
         </li>
       </ul>
       <ul class="navbar-nav">
