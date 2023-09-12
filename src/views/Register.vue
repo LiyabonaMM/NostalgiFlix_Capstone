@@ -1,5 +1,9 @@
 <template>
   <div class="register-container bg-dark text-white">
+    <div v-if="isLoading" class="spinner-overlay">
+      <div class="spinner"></div>
+    </div>
+
     <div class="text-center mt-5">
       <h1>Join NostalgiFlix</h1>
       <p>Register and dive into our collection of unforgettable movies.</p>
@@ -65,6 +69,7 @@
 <script>
 import { mapActions } from 'vuex';
 import router from '@/router'
+
 export default {
   data() {
     return {
@@ -73,7 +78,8 @@ export default {
       email: '',
       password: '',
       isAdminCode: '',
-      errorMessage: ''
+      errorMessage: '',
+      isLoading: false
     };
   },
   methods: {
@@ -105,6 +111,8 @@ export default {
         return;
       }
 
+      this.isLoading = true;
+
       const registrationInfo = {
         firstName: this.firstName,
         lastName: this.lastName,
@@ -131,13 +139,15 @@ export default {
         if (data.token) {
           localStorage.setItem('authToken', data.token);
           this.setAuthenticated(true);
-          // this.$router.push({ name: '/' });
           router.push( '/' );
         } else {
           this.errorMessage = data.message || 'Error registering the user.';
         }
       } catch (error) {
+        this.errorMessage = 'Error during registration.';
         router.push( '/login' );
+      } finally {
+        this.isLoading = false;
       }
     }
   }
@@ -174,5 +184,32 @@ h1 {
 .btn-gold:hover {
     background-color: #FFD700;
     color: black;
+}
+
+.spinner-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+}
+
+.spinner {
+    border: 4px solid rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    border-top: 4px solid gold;
+    width: 40px;
+    height: 40px;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
 }
 </style>
