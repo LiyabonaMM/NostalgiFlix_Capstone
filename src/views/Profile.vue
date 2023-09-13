@@ -26,9 +26,34 @@
         <p><strong>Email:</strong> {{ profile.email }}</p>
         <p v-if="profile.isAdmin"><strong>Role:</strong> Admin</p>
       </div>
+      <button @click="editMode = !editMode" class="btn btn-gold mt-3">
+        Edit Profile
+      </button>
       <button @click="promptDeleteProfile" class="btn btn-danger mt-3">
         Delete Profile
       </button>
+
+      <!-- Edit Profile Form -->
+      <div v-if="editMode" class="edit-profile-form mt-3">
+        <input
+          type="text"
+          v-model="profile.firstName"
+          placeholder="First Name"
+        />
+        <input type="text" v-model="profile.lastName" placeholder="Last Name" />
+        <input type="email" v-model="profile.email" placeholder="Email" />
+        <input
+          type="password"
+          v-model="oldPassword"
+          placeholder="Old Password"
+        />
+        <input
+          type="password"
+          v-model="newPassword"
+          placeholder="New Password"
+        />
+        <button @click="updateProfile" class="btn btn-gold mt-3">Update</button>
+      </div>
     </div>
 
     <!-- If there's an error -->
@@ -40,6 +65,7 @@
 
 <script>
 import router from '../router';
+import Swal from 'sweetalert2'; // ensure you've installed this
 
 export default {
   data() {
@@ -48,7 +74,10 @@ export default {
       profile: null,
       loading: false,
       profileClicked: false,
-      error: null
+      error: null,
+      editMode: false,
+      oldPassword: '',
+      newPassword: ''
     };
   },
   methods: {
@@ -85,28 +114,67 @@ export default {
       }
     },
     async deleteProfile() {
-  this.loading = true;
-  try {
-    const response = await fetch("https://backendnost.onrender.com/api/users/delete", {
-      method: 'DELETE',
-      headers: {
-        'Authorization': 'Bearer ' + this.token
+      this.loading = true;
+      try {
+        const response = await fetch("https://backendnost.onrender.com/api/users/delete", {
+          method: 'DELETE',
+          headers: {
+            'Authorization': 'Bearer ' + this.token
+          }
+        });
+        if(response.ok) {
+          localStorage.removeItem('authToken');
+          this.$store.commit('setAuthenticated', false);  // Assuming you're using Vuex to manage state
+          router.push('/'); // Redirect to the home page
+        } else {
+          const errorData = await response.json();
+          throw new Error(errorData.message || 'Failed to delete profile.');
+        }
+      } catch (error) {
+        this.error = error.message;
+      } finally {
+        this.loading = false;
       }
-    });
-    if(response.ok) {
-      localStorage.removeItem('authToken');
-      this.$store.commit('setAuthenticated', false);  // Assuming you're using Vuex to manage state
-      router.push('/'); // Redirect to the home page
-    } else {
-      const errorData = await response.json();
-      throw new Error(errorData.message || 'Failed to delete profile.');
+    },
+    async updateProfile() {
+      this.loading = true;
+      try {
+        const response = await fetch(`https://backendnost.onrender.com/api/users/profile/update/${this.profile.id}`, {
+          method: 'PUT',
+          headers: {
+            'Authorization': 'Bearer ' + this.token,
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            firstName: this.profile.firstName,
+            lastName: this.profile.lastName,
+            email: this.profile.email,
+            oldPassword: this.oldPassword,
+            newPassword: this.newPassword
+          })
+        });
+
+        if (response.ok) {
+          Swal.fire({
+            title: 'Success!',
+            text: 'Profile successfully updated.',
+            icon: 'success',
+            confirmButtonText: 'OK',
+            background: '#333',
+            iconColor: 'gold',
+            confirmButtonColor: 'gold'
+          });
+          this.editMode = false; // close the edit form
+        } else {
+          const errorData = await response.json();
+          throw new Error(errorData.message || 'Failed to update profile.');
+        }
+      } catch (error) {
+        this.error = error.message;
+      } finally {
+        this.loading = false;
+      }
     }
-  } catch (error) {
-    this.error = error.message;
-  } finally {
-    this.loading = false;
-  }
-}
   }
 };
 </script>
@@ -175,7 +243,7 @@ h1 {
   color: white;
 }
 .profile-icon {
-  font-size: 5rem; /* Change the size as needed */
+  font-size: 5rem;
   margin-bottom: 15px;
   color: gold;
 }
