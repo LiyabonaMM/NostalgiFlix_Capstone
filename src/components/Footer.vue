@@ -13,8 +13,22 @@
       <div class="footer-info">
         <p>&copy; 2023 NostalgiFlix. All rights reserved.</p>
         <p>
-          <a href="#">Terms of Service</a> | <a href="#">Privacy Policy</a> |
-          <a href="#">FAQs</a> | <a href="#">Contact</a>
+          <a
+            href="https://www.fleetster.net/legal/standard-terms-and-conditions.pdf"
+            >Terms of Service</a
+          >
+          |
+          <a
+            href="https://www.fleetster.net/legal/standard-terms-and-conditions.pdf"
+            >Privacy Policy</a
+          >
+          |
+          <a
+            href="https://printtechnologies.org/wp-content/uploads/2020/03/19005-1_faq.pdf"
+            >FAQs</a
+          >
+          |
+          <a href="#">Contact</a>
         </p>
         <p>Email: support@nostalgiflix.com | Phone: +1 (800) 123-4567</p>
         <p>Address: 123 Movie Lane, Film City, FC 45678</p>

@@ -24,16 +24,13 @@
           <div class="carousel-inner">
             <div class="carousel-item active">
               <img
-                src="https://images2.imgbox.com/ea/6a/0YNCtFz3_o.jpg"
+                src="https://i.postimg.cc/7YdXdjnQ/Wallpaper-Dog-5452575.jpg"
                 class="d-block w-100"
                 alt="Movie1"
               />
               <div class="carousel-caption d-none d-md-block">
-                <h5>Star Wars The Empire Strikes Back</h5>
-                <p>
-                  Darth Vader is adamant about turning Luke Skywalker to the
-                  dark side...
-                </p>
+                <h5>Blood Of the Vampire</h5>
+                <p>Old School Retro Vampire Vhs from the 1700...</p>
               </div>
             </div>
             <div class="carousel-item">
@@ -88,7 +85,7 @@
             </div>
             <div class="col-md-4 text-center">
               <img
-                src="https://i.postimg.cc/8cfLLGcg/zubai.png"
+                src="https://i.postimg.cc/GpWxSDP8/zzzzzz.png"
                 alt="Customer 3"
                 class="rounded-circle"
               />
