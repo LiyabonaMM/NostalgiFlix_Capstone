@@ -17,6 +17,8 @@
 </template>
 
 <script>
+import Swal from 'sweetalert2';
+
 function getAuthHeaders(token) {
   return {
     "Content-Type": "application/json",
@@ -38,29 +40,50 @@ export default {
   },
   methods: {
     async signInAsAdmin() {
-  this.loginError = null;
-  try {
-    const response = await fetch("https://backendnost.onrender.com/api/users/login", {
-      method: 'POST',
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(this.adminCredentials)
-    });
-    const data = await response.json();
+      this.loginError = null;
+      try {
+        const response = await fetch("https://backendnost.onrender.com/api/users/login", {
+          method: 'POST',
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(this.adminCredentials)
+        });
+        const data = await response.json();
 
-    if (data.token && data.user.isAdmin === 1) {  // Check if the user is an admin
-      this.$store.commit('SET_TOKEN', data.token);
-      this.$store.commit('SET_AUTHENTICATED', true);
-      this.$router.push('/admin-dashboard');
-    } else if (data.token) { // User is authenticated but not an admin
-      this.loginError = "You are not authorized to access the admin dashboard.";
-    } else {
-      this.loginError = "Incorrect email or password.";
+        if (data.token && data.user.isAdmin === 1) {
+          this.$store.commit('SET_TOKEN', data.token);
+          this.$store.commit('SET_AUTHENTICATED', true);
+          this.$router.push('/admin-dashboard');
+          Swal.fire({
+            icon: 'success',
+            title: 'Logged in successfully!',
+            text: 'Welcome to the admin dashboard!',
+            timer: 1500,
+            showConfirmButton: false,
+            background: '#2c2c2c',
+            iconColor: 'gold',
+            confirmButtonColor: 'gold'
+          });
+        } else if (data.token) {
+          this.showSwalError("You are not authorized to access the admin dashboard.");
+        } else {
+          this.showSwalError("Incorrect email or password.");
+        }
+      } catch (error) {
+        console.error("Error logging in:", error);
+        this.showSwalError("Error occurred while logging in.");
+      }
+    },
+
+    showSwalError(message) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: message,
+        background: '#2c2c2c',
+        iconColor: 'red',
+        confirmButtonColor: 'gold'
+      });
     }
-  } catch (error) {
-    console.error("Error logging in:", error);
-    this.loginError = "Error occurred while logging in.";
-  }
-}
   }
 };
 </script>
