@@ -49,6 +49,7 @@
 
 <script>
 import axios from 'axios';
+import Swal from 'sweetalert2';
 
 export default {
   data() {
@@ -93,11 +94,14 @@ export default {
 
         if (response.status === 200 || response.status === 204) {
           this.movies = this.movies.filter(movie => movie.id !== movieId);
+          this.showSwalSuccess("Movie deleted successfully!");
         } else {
           console.error("Error deleting movie:", response.data);
+          this.showSwalError("Failed to delete the movie.");
         }
       } catch (err) {
         console.error("Error deleting movie:", err);
+        this.showSwalError("Error occurred while deleting the movie.");
       }
     },
     editMovie(movieId) {
@@ -105,26 +109,51 @@ export default {
       this.selectedMovie = { ...movieToEdit };
     },
     async updateMovie() {
-  try {
-    const response = await axios.put(`https://backendnost.onrender.com/api/movies/movie/${this.selectedMovie.id}`, this.selectedMovie, {
-      headers: {
-        "Content-Type": "application/json",
-        "Authorization": `Bearer ${this.authToken}`
+      try {
+        const response = await axios.put(`https://backendnost.onrender.com/api/movies/movie/${this.selectedMovie.id}`, this.selectedMovie, {
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${this.authToken}`
+          }
+        });
+
+        if (response.status === 200 || response.status === 204) {
+          const index = this.movies.findIndex(movie => movie.id === this.selectedMovie.id);
+          this.movies.splice(index, 1, this.selectedMovie);
+          this.selectedMovie = null;
+        } else {
+          console.error("Error updating movie:", response.data);
+          this.showSwalError("Error occurred while updating the movie.");
+        }
+      } catch (err) {
+        console.error("Error updating movie:", err);
+        this.showSwalError("Error occurred while updating the movie.");
       }
-    });
+    },
 
-    if (response.status === 200 || response.status === 204) {
-      const index = this.movies.findIndex(movie => movie.id === this.selectedMovie.id);
-      this.movies.splice(index, 1, this.selectedMovie);
-      this.selectedMovie = null;
-    } else {
-      console.error("Error updating movie:", response.data);
+    showSwalSuccess(message) {
+      Swal.fire({
+        icon: 'success',
+        title: 'Success',
+        text: message,
+        timer: 1500,
+        showConfirmButton: false,
+        background: '#2c2c2c',
+        iconColor: 'gold',
+        confirmButtonColor: 'gold'
+      });
+    },
+
+    showSwalError(message) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: message,
+        background: '#2c2c2c',
+        iconColor: 'red',
+        confirmButtonColor: 'gold'
+      });
     }
-  } catch (err) {
-    console.error("Error updating movie:", err);
-  }
-}
-
   }
 };
 </script>

@@ -53,6 +53,7 @@
 
 <script>
 import axios from 'axios';
+import Swal from 'sweetalert2';
 
 function getAuthHeaders(token) {
   return {
@@ -88,17 +89,44 @@ export default {
         const response = await axios.post(
           'https://backendnost.onrender.com/api/movies/movie',
           this.movie,
-          { headers: getAuthHeaders(this.authToken) } // Add headers using the helper function
+          { headers: getAuthHeaders(this.authToken) }
         );
 
         if (response.status === 200 || response.status === 201) {
           this.$router.push('');
+          this.showSwalSuccess("Movie created successfully!");
         } else {
           console.error("Error creating movie:", response.data);
+          this.showSwalError("Failed to create the movie.");
         }
       } catch (err) {
         console.error("Error creating movie:", err);
+        this.showSwalError("Error occurred while creating the movie.");
       }
+    },
+
+    showSwalSuccess(message) {
+      Swal.fire({
+        icon: 'success',
+        title: 'Success',
+        text: message,
+        timer: 1500,
+        showConfirmButton: false,
+        background: '#2c2c2c',
+        iconColor: 'gold',
+        confirmButtonColor: 'gold'
+      });
+    },
+
+    showSwalError(message) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: message,
+        background: '#2c2c2c',
+        iconColor: 'red',
+        confirmButtonColor: 'gold'
+      });
     }
   }
 };
