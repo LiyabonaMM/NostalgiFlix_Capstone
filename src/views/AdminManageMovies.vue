@@ -2,6 +2,27 @@
   <div class="admin-movies">
     <div v-if="isAuthenticated">
       <h2>Manage Movies</h2>
+
+      <!-- Edit Form -->
+      <div v-if="selectedMovie">
+        <h3>Edit Movie: {{ selectedMovie.title }}</h3>
+        <form @submit.prevent="updateMovie">
+          <input v-model="selectedMovie.title" placeholder="Title" />
+          <input v-model="selectedMovie.imageUrl" placeholder="Image URL" />
+          <textarea
+            v-model="selectedMovie.description"
+            placeholder="Description"
+          ></textarea>
+          <input
+            v-model="selectedMovie.releaseDate"
+            placeholder="Release Date (YYYY-MM-DD)"
+          />
+          <input v-model="selectedMovie.rating" placeholder="Rating" />
+          <input v-model="selectedMovie.price" placeholder="Price" />
+          <button type="submit">Update Movie</button>
+        </form>
+      </div>
+
       <ul v-if="movies && movies.length" class="movie-list">
         <li v-for="movie in movies" :key="movie.id">
           <div>
@@ -33,6 +54,7 @@ export default {
   data() {
     return {
       movies: [],
+      selectedMovie: null,
     };
   },
   computed: {
@@ -54,7 +76,7 @@ export default {
     if (this.isAuthenticated) {
       try {
         const response = await axios.get("https://backendnost.onrender.com/api/movies/movies");
-        this.movies = response.data[0];  // Assuming movies data is nested in an array
+        this.movies = response.data[0];
       } catch (err) {
         console.error(err);
       }
@@ -79,11 +101,34 @@ export default {
       }
     },
     editMovie(movieId) {
-      this.$router.push({ path: `/admin/movies/edit/${movieId}` });
+      const movieToEdit = this.movies.find(movie => movie.id === movieId);
+      this.selectedMovie = { ...movieToEdit };
+    },
+    async updateMovie() {
+  try {
+    const response = await axios.put(`https://backendnost.onrender.com/api/movies/movie/${this.selectedMovie.id}`, this.selectedMovie, {
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${this.authToken}`
+      }
+    });
+
+    if (response.status === 200 || response.status === 204) {
+      const index = this.movies.findIndex(movie => movie.id === this.selectedMovie.id);
+      this.movies.splice(index, 1, this.selectedMovie);
+      this.selectedMovie = null;
+    } else {
+      console.error("Error updating movie:", response.data);
     }
+  } catch (err) {
+    console.error("Error updating movie:", err);
+  }
+}
+
   }
 };
 </script>
+
 <style scoped>
 .admin-movies {
   padding: 20px;

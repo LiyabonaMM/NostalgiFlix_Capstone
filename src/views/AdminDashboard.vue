@@ -5,13 +5,18 @@
 
       <!-- Navigation Links -->
       <nav>
-        <router-link to="/admin-dashboard/movies">Manage Movies</router-link>
-        <router-link to="/admin-dashboard/movies/create"
-          >Create Movie</router-link
+        <router-link to="/admin-dashboard/movies" class="nav-link"
+          ><i class="fas fa-film"></i> Manage Movies</router-link
         >
-        <router-link to="/admin-dashboard/movies/edit">Edit Movie</router-link>
-        <router-link to="/admin-dashboard/users">Manage Users</router-link>
-        <button @click="logout">Logout</button>
+        <router-link to="/admin-dashboard/movies/create" class="nav-link"
+          ><i class="fas fa-plus-circle"></i> Create Movie</router-link
+        >
+        <router-link to="/admin-dashboard/users" class="nav-link"
+          ><i class="fas fa-users"></i> Manage Users</router-link
+        >
+        <button @click="logout">
+          <i class="fas fa-sign-out-alt"></i> Logout
+        </button>
       </nav>
 
       <!-- Display the Components -->
@@ -24,8 +29,15 @@
 </template>
 
 <script>
+// Assuming that you're using FontAwesome for icons
+// Add this line at the top of your script to use FontAwesome icons in Vue
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
+
 export default {
   name: 'AdminDashboard',
+  components: {
+    FontAwesomeIcon
+  },
   computed: {
     isAuthenticated() {
       return this.$store.state.isAuthenticated;
@@ -34,7 +46,7 @@ export default {
   watch: {
     isAuthenticated(val) {
       if (!val) {
-        this.$router.push("/admin");  // Redirect back to Admin login if not authenticated
+        this.$router.push("/admin");
       }
     }
   },
@@ -67,11 +79,26 @@ nav {
   margin-bottom: 20px;
 }
 
+.nav-link {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 15px;
+  background-color: #444;
+  border-radius: 5px;
+  transition: background-color 0.3s, transform 0.3s;
+}
+
+.nav-link:hover {
+  background-color: #555;
+  transform: scale(1.05);
+}
+
 router-link, button {
   text-decoration: none;
   padding: 10px 15px;
-  background-color: #007BFF;
-  color: #FFFFFF;
+  background-color: gold;
+  color: #333;
   border-radius: 5px;
   border: none;
   cursor: pointer;
@@ -79,14 +106,20 @@ router-link, button {
 }
 
 router-link.active, router-link:hover, button:hover {
-  background-color: #0056b3;
+  background-color: #bbae00;
 }
 
 button {
-  background-color: #FF5555;
+  background-color: #8B4513;
 }
 
 button:hover {
-  background-color: #DD3333;
+  background-color: #A0522D;
+}
+
+/* For the FontAwesome icons */
+.fas {
+  font-size: 16px;
+  margin-right: 5px;
 }
 </style>
