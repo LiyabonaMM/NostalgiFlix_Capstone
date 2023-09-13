@@ -95,7 +95,7 @@ const userController = {
 
   async editProfile(req, res) {
     try {
-      const userId = req.user.userId
+      const userId = req.params.userId
       const { firstName, lastName } = req.body
 
       await pool.execute(
@@ -151,7 +151,7 @@ const userController = {
 
   async updateProfile(req, res) {
     try {
-      const userId = req.user.userId
+      const userId = req.params.userId
       const { firstName, lastName, email, oldPassword, newPassword } = req.body
 
       const [users] = await pool.execute("SELECT * FROM Users WHERE id = ?", [
