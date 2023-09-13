@@ -67,8 +67,10 @@
 </template>
 
 <script>
+import Swal from 'sweetalert2';
 import { mapActions } from 'vuex';
 import router from '@/router'
+
 
 export default {
   data() {
@@ -140,6 +142,15 @@ export default {
           localStorage.setItem('authToken', data.token);
           this.setAuthenticated(true);
           router.push( '/' );
+          Swal.fire({
+            title: 'Success!',
+            text: 'Registration completed successfully.',
+            icon: 'success',
+            confirmButtonText: 'OK',
+            background: '#333', // dark background
+            iconColor: 'gold', // gold icon color
+            confirmButtonColor: 'gold', // gold button color
+          });
         } else {
           this.errorMessage = data.message || 'Error registering the user.';
         }

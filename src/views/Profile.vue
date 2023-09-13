@@ -19,6 +19,7 @@
 
     <!-- If profile data is available -->
     <div v-else-if="profile && profile.email" class="profile-details">
+      <i class="fas fa-user-circle profile-icon"></i>
       <h1>Welcome, {{ profile.firstName }} {{ profile.lastName }}</h1>
       <div class="profile-info">
         <p><strong>ID:</strong> {{ profile.id }}</p>
@@ -172,5 +173,10 @@ h1 {
 .btn-danger:hover {
   background-color: darkred;
   color: white;
+}
+.profile-icon {
+  font-size: 5rem; /* Change the size as needed */
+  margin-bottom: 15px;
+  color: gold;
 }
 </style>

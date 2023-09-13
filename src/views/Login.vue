@@ -31,6 +31,7 @@
 </template>
 
 <script>
+import Swal from 'sweetalert2';
 import { mapActions } from 'vuex';
 import router from '../router';
 
@@ -39,14 +40,14 @@ export default {
     return {
       email: '',
       password: '',
-      isLoading: false  // <-- Add this for the loading state
+      isLoading: false
     };
   },
   methods: {
     ...mapActions(['setAuthenticated']),
 
     async login() {
-      this.isLoading = true;  // <-- Start the spinner
+      this.isLoading = true;
 
       const loginInfo = {
         email: this.email,
@@ -68,14 +69,39 @@ export default {
           localStorage.setItem('authToken', data.token);
           this.setAuthenticated(true);
           router.push('/');
+          Swal.fire({
+            title: 'Success!',
+            text: 'Logged in successfully.',
+            icon: 'success',
+            confirmButtonText: 'OK',
+            background: '#333',
+            iconColor: 'gold',
+            confirmButtonColor: 'gold',
+          });
         } else {
-          alert(data.message || 'Error logging in.');
+          Swal.fire({
+            title: 'Error!',
+            text: data.message || 'Error logging in.',
+            icon: 'error',
+            confirmButtonText: 'OK',
+            background: '#333',
+            iconColor: 'gold',
+            confirmButtonColor: 'gold',
+          });
         }
       } catch (error) {
         console.error("Error logging in:", error.message);
-        alert('An error occurred while logging in. Please try again.');
+        Swal.fire({
+          title: 'Error!',
+          text: 'An error occurred while logging in. Please try again.',
+          icon: 'error',
+          confirmButtonText: 'OK',
+          background: '#333',
+          iconColor: 'gold',
+          confirmButtonColor: 'gold',
+        });
       } finally {
-        this.isLoading = false;  // <-- Stop the spinner
+        this.isLoading = false;
       }
     }
   }

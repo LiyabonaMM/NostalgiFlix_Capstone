@@ -23,26 +23,37 @@
     <div class="collapse navbar-collapse" id="navbarNav">
       <ul class="navbar-nav mx-auto">
         <li class="nav-item active">
-          <router-link to="/" class="nav-link">Home</router-link>
+          <router-link to="/" class="nav-link"
+            ><i class="fas fa-home"></i> Home</router-link
+          >
         </li>
         <li class="nav-item">
-          <router-link to="/about" class="nav-link">About</router-link>
+          <router-link to="/about" class="nav-link"
+            ><i class="fas fa-info-circle"></i> About</router-link
+          >
         </li>
         <li class="nav-item">
-          <router-link to="/movies" class="nav-link">Movies</router-link>
+          <router-link to="/movies" class="nav-link"
+            ><i class="fas fa-film"></i> Movies</router-link
+          >
         </li>
         <li class="nav-item">
-          <router-link to="/contact" class="nav-link">Contact</router-link>
+          <router-link to="/contact" class="nav-link"
+            ><i class="fas fa-envelope"></i> Contact</router-link
+          >
         </li>
         <li class="nav-item">
-          <router-link to="/admin" class="nav-link">Admin</router-link>
+          <router-link to="/admin" class="nav-link"
+            ><i class="fas fa-user-shield"></i> Admin</router-link
+          >
         </li>
         <li class="nav-item">
-          <router-link to="/profile" class="nav-link">Profile</router-link>
+          <router-link to="/profile" class="nav-link"
+            ><i class="fas fa-user"></i> Profile</router-link
+          >
         </li>
       </ul>
       <ul class="navbar-nav">
-        <!-- Cart Icon and Counter -->
         <li class="nav-item">
           <router-link to="/cart" class="nav-link">
             <i class="fa fa-shopping-cart"></i>
@@ -82,7 +93,10 @@ export default {
 <style scoped>
 .navbar {
     font-family: 'Arial', sans-serif;
+}
 
+.nav-item .nav-link:hover {
+    color: gold !important;
 }
 
 .cart-counter {
@@ -95,7 +109,7 @@ export default {
     color: white;
 }
 
-.fa-shopping-cart {
-    font-size: 24px;
+.fa-shopping-cart, .fas.fa-film, .fas.fa-envelope, .fas.fa-user-shield, .fas.fa-user, .fas.fa-home, .fas.fa-info-circle {
+    margin-right: 5px;  /* Spacing between icon and text */
 }
 </style>
