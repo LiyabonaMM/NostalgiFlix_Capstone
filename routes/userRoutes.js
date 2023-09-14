@@ -81,6 +81,6 @@ router.put(
 )
 
 // Delete user (based on your existing route)
-router.delete("/delete", auth, userController.deleteUser)
+router.delete("/delete/:userId", auth, userController.deleteUser)
 
 module.exports = router
