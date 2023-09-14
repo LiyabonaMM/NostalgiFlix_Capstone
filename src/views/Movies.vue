@@ -78,9 +78,9 @@
     </section>
   </div>
 </template>
-
 <script>
 import { mapActions } from 'vuex';
+import Swal from 'sweetalert2';
 
 export default {
   name: "Movies",
@@ -112,8 +112,18 @@ export default {
   },
   methods: {
     ...mapActions(['addToCart']),
-    handleAddToCart(movie) {
+    async handleAddToCart(movie) {
       this.addToCart(movie);
+
+      // Use SweetAlert2 to show a success message
+      await Swal.fire({
+        icon: 'success',
+        title: '<span class="swal2-title-text">Added to Cart!</span>',
+        html: `<span class="swal2-text">${movie.title} has been added to your cart.</span>`,
+        background: '#121212',
+        confirmButtonColor: '#FFD700',
+        confirmButtonText: 'OK'
+      });
     }
   },
   async created() {
@@ -246,5 +256,31 @@ input, select {
 @keyframes spin {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
+}
+
+/* SweetAlert2 Custom Styles */
+.swal2-popup {
+  font-family: "Roboto", sans-serif;
+  background-color: #121212;
+}
+
+.swal2-title-text {
+  color: #FFD700;
+  font-size: 1.6rem;
+  font-weight: bold;
+}
+
+.swal2-text {
+  color: rgba(255, 255, 255, 0.95);
+}
+
+.swal2-confirm {
+  background-color: #FFD700;
+  border: none;
+  color: #333;
+}
+
+.swal2-confirm:hover {
+  background-color: #e6bf00;
 }
 </style>

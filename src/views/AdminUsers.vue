@@ -33,6 +33,14 @@
 <script>
 import axios from 'axios';
 
+// Helper function to retrieve the authentication headers
+function getAuthHeaders(token) {
+  return {
+    "Content-Type": "application/json",
+    "Authorization": `Bearer ${token}`
+  };
+}
+
 export default {
   data() {
     return {
@@ -42,32 +50,42 @@ export default {
   computed: {
     isAuthenticated() {
       return this.$store.state.isAuthenticated;
+    },
+    authToken() {
+      return this.$store.state.token;
     }
   },
   watch: {
     isAuthenticated(val) {
       if (!val) {
-        this.$router.push("/admin");  // Redirect back to Admin login if not authenticated
+        this.$router.push("/admin"); // Redirect back to Admin login if not authenticated
       }
     }
   },
   async created() {
     if (this.isAuthenticated) {
-      // Fetch users when the component is created
       try {
-        const response = await axios.get("https://backendnost.onrender.com/api/users/all");
+        const response = await axios.get("https://backendnost.onrender.com/api/users/all", {
+          headers: getAuthHeaders(this.authToken) // Add this line to ensure that the user fetching is authenticated
+        });
         this.users = response.data;
       } catch (err) {
         console.error("Error fetching users:", err);
+        if (err.response && err.response.status === 401) {
+          this.$store.commit("setAuthentication", false); // Log out the user if unauthorized
+        }
       }
     }
   },
   methods: {
     async deleteUser(userId) {
       try {
-        const response = await axios.delete(`https://backendnost.onrender.com/api/users/admin/delete/${userId}`);
+        const response = await axios.delete(
+          `https://backendnost.onrender.com/api/users/delete/${userId}`, // Adjust the endpoint to match your server's
+          { headers: getAuthHeaders(this.authToken) }
+        );
+
         if (response.status === 200) {
-          // Remove user from the local list
           this.users = this.users.filter(user => user.id !== userId);
         } else {
           console.error("Error deleting user:", response.data);
