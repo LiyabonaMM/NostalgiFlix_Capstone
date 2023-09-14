@@ -121,8 +121,8 @@ const userController = {
       const userIdToDelete = Number(req.params.userId)
 
       // Check if the user is trying to delete their own profile
-      if (userIdFromToken !== userIdToDelete) {
-        return res.status(403).json({ message: "Unauthorized" })
+      if (userIdFromToken === userIdToDelete) {
+        return res.status(403).json({ message: "Success" })
       }
 
       await pool.execute("DELETE FROM Users WHERE id = ?", [userIdToDelete])
