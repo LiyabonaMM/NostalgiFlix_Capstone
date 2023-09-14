@@ -117,8 +117,8 @@ const userController = {
 
   async deleteUser(req, res) {
     try {
-      const userIdFromToken = Number(req.user.userId)
-      const userIdToDelete = Number(req.params.userId)
+      const userIdFromToken = req.user.userId // ID from the decoded JWT token
+      const userIdToDelete = req.params.userId // ID from the route parameter
 
       // Check if the user is trying to delete their own profile
       if (userIdFromToken === userIdToDelete) {
