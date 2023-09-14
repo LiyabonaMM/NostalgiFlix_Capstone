@@ -65,7 +65,8 @@
 
 <script>
 import router from '../router';
-import Swal from 'sweetalert2'; // ensure you've installed this
+import Swal from 'sweetalert2';
+import { mapState, mapActions } from 'vuex';
 
 export default {
   data() {
@@ -80,7 +81,11 @@ export default {
       newPassword: ''
     };
   },
+  computed: {
+    ...mapState(['isAuthenticated']),
+  },
   methods: {
+    ...mapActions(['logout']),
     redirectToLogin() {
       router.push('/login');
     },
@@ -107,38 +112,35 @@ export default {
         this.loading = false;
       }
     },
-   promptDeleteProfile() {
-  Swal.fire({
-    title: 'Are you sure?',
-    text: "You won't be able to revert this!",
-    icon: 'warning',
-    showCancelButton: true,
-    confirmButtonColor: 'gold',
-    cancelButtonColor: 'red',
-    confirmButtonText: 'Yes, delete it!',
-    background: '#333',
-    iconColor: 'gold'
-  }).then((result) => {
-    if (result.isConfirmed) {
-      this.deleteProfile();
-
-
-       Swal.fire({
-         title: 'Deleted!',
-        text: 'Your profile has been deleted.',
-        icon: 'success',
+    promptDeleteProfile() {
+      Swal.fire({
+        title: 'Are you sure?',
+        text: "You won't be able to revert this!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: 'gold',
+        cancelButtonColor: 'red',
+        confirmButtonText: 'Yes, delete it!',
         background: '#333',
-         iconColor: 'gold',
-         confirmButtonColor: 'gold'
+        iconColor: 'gold'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          this.deleteProfile();
+          Swal.fire({
+            title: 'Deleted!',
+            text: 'Your profile has been deleted.',
+            icon: 'success',
+            background: '#333',
+            iconColor: 'gold',
+            confirmButtonColor: 'gold'
+          });
+        }
       });
-    }
-  });
-},
+    },
     async deleteProfile() {
       this.loading = true;
       try {
         const response = await fetch(`https://backendnost.onrender.com/api/users/delete`, {
-
           method: 'DELETE',
           headers: {
             'Authorization': 'Bearer ' + this.token
@@ -146,8 +148,8 @@ export default {
         });
         if(response.ok) {
           localStorage.removeItem('authToken');
-          this.$store.commit('setAuthenticated', false);  // Assuming you're using Vuex to manage state
-          router.push('/'); // Redirect to the home page
+          this.logout();
+          router.push('/').then(() => location.reload());
         } else {
           const errorData = await response.json();
           throw new Error(errorData.message || 'Failed to delete profile.');
@@ -186,7 +188,7 @@ export default {
             iconColor: 'gold',
             confirmButtonColor: 'gold'
           });
-          this.editMode = false; // close the edit form
+          this.editMode = false;
         } else {
           const errorData = await response.json();
           throw new Error(errorData.message || 'Failed to update profile.');
@@ -200,7 +202,6 @@ export default {
   }
 };
 </script>
-
 <style scoped>
 .profile-container {
   font-family: 'Roboto', sans-serif;

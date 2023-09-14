@@ -1,5 +1,8 @@
 <template>
-  <div class="contact-container bg-dark text-white">
+  <div
+    class="contact-container bg-dark text-white"
+    :style="{ opacity: opacity }"
+  >
     <!-- Contact Header -->
     <section class="contact-header text-center py-5">
       <h1>Contact Us</h1>
@@ -15,6 +18,7 @@
         action="https://formspree.io/f/xoqowldw"
         method="POST"
         class="mx-auto"
+        @submit.prevent="handleSubmit"
       >
         <div class="form-group">
           <label for="email">Your Email:</label>
@@ -22,21 +26,29 @@
             type="email"
             name="email"
             id="email"
+            v-model="email"
             class="form-control"
             placeholder="Enter your email"
             required
           />
+          <div class="error-message" v-if="errors.email">
+            {{ errors.email }}
+          </div>
         </div>
         <div class="form-group">
           <label for="message">Your Message:</label>
           <textarea
             name="message"
             id="message"
+            v-model="message"
             class="form-control"
             rows="5"
             placeholder="Write your message here..."
             required
           ></textarea>
+          <div class="error-message" v-if="errors.message">
+            {{ errors.message }}
+          </div>
         </div>
         <div class="text-center">
           <button type="submit" class="btn-submit">Send</button>
@@ -48,7 +60,44 @@
 
 <script>
 export default {
-  name: 'Contact'
+  name: 'Contact',
+  data() {
+    return {
+      email: '',
+      message: '',
+      errors: {},
+      opacity: 0
+    };
+  },
+  mounted() {
+    setTimeout(() => {
+      this.opacity = 1;
+    }, 50);
+  },
+  methods: {
+    validateForm() {
+      this.errors = {};
+
+      if (!this.email) {
+        this.errors.email = "Email is required.";
+      } else if (!/\S+@\S+\.\S+/.test(this.email)) {
+        this.errors.email = "Please provide a valid email.";
+      }
+
+      if (!this.message) {
+        this.errors.message = "Message is required.";
+      } else if (this.message.length < 10 || this.message.length > 500) {
+        this.errors.message = "Message should be between 10 to 500 characters.";
+      }
+
+      return Object.keys(this.errors).length === 0;
+    },
+    async handleSubmit() {
+      if (this.validateForm()) {
+        // Perform the actual form submission here.
+      }
+    }
+  }
 };
 </script>
 
@@ -58,6 +107,7 @@ export default {
   padding: 2rem;
   max-width: 100%;
   overflow-x: hidden;
+  transition: opacity 1s;
 }
 
 h1 {
@@ -89,7 +139,7 @@ h1 {
 }
 
 .btn-submit {
-  background-color: #FFD700;  /* golden color for button */
+  background-color: #FFD700;
   padding: 0.7rem 1.5rem;
   border: none;
   border-radius: 5px;
@@ -100,7 +150,13 @@ h1 {
 }
 
 .btn-submit:hover {
-  background-color: #E8C400; /* slightly darker gold for hover effect */
+  background-color: #E8C400;
   transform: scale(1.05);
+}
+
+.error-message {
+  color: red;
+  margin-bottom: 1rem;
+  font-weight: 500;
 }
 </style>

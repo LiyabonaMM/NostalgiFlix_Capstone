@@ -17,6 +17,7 @@
       <div class="filter-item">
         <label>Sort By: </label>
         <select v-model="sortKey">
+          <option value="all">All</option>
           <option value="title">Title</option>
           <option value="rating">Rating</option>
           <option value="price">Price</option>
@@ -78,6 +79,7 @@
     </section>
   </div>
 </template>
+
 <script>
 import { mapActions } from 'vuex';
 import Swal from 'sweetalert2';
@@ -88,9 +90,9 @@ export default {
     return {
       movies: [],
       searchTerm: '',
-      sortKey: 'title',
+      sortKey: 'all',
       minRating: 1,
-      isLoading: true  // Initial state is true since we're loading data initially
+      isLoading: true
     };
   },
   computed: {
@@ -106,6 +108,7 @@ export default {
       } else if (this.sortKey === 'price') {
         filtered.sort((a, b) => a.price - b.price);
       }
+      // No need for an "all" condition since we won't sort for "all", we'll just return the filtered results.
 
       return filtered;
     }
