@@ -117,8 +117,8 @@ const userController = {
 
   async deleteUser(req, res) {
     try {
-      const userIdFromToken = req.user.userId
-      const userIdToDelete = Number(req.params.userId) // Convert route parameter to a number
+      const userIdFromToken = Number(req.user.userId)
+      const userIdToDelete = Number(req.params.userId)
 
       // Check if the user is trying to delete their own profile
       if (userIdFromToken !== userIdToDelete) {
