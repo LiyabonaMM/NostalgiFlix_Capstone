@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API Documentation</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        h1, h2 {
+            color: #333;
+        }
+        .endpoint {
+            background-color: #f9f9f9;
+            padding: 15px;
+            margin-bottom: 20px;
+            border-left: 5px solid #007BFF; /* Primary color */
+        }
+        .method {
+            display: inline-block;
+            padding: 5px 10px;
+            color: #fff;
+            border-radius: 4px;
+            margin-right: 10px;
+        }
+        .get {
+            background-color: #4CAF50;
+        }
+        .post {
+            background-color: #007BFF;
+        }
+        .put {
+            background-color: #FFC107;
+        }
+        .delete {
+            background-color: #F44336;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>API Documentation</h1>
+        
+        <h2>Movies Endpoints:</h2>
+        
+        <!-- Get All Movies -->
+        <div class="endpoint">
+            <span class="method get">GET</span> https://backendnost.onrender.com/api/movies/movies
+        </div>
+
+        <!-- Get Movie by ID -->
+        <div class="endpoint">
+            <span class="method get">GET</span> https://backendnost.onrender.com/api/movies/movie/:id
+        </div>
+
+        <!-- Create a New Movie -->
+        <div class="endpoint">
+            <span class="method post">POST</span> https://backendnost.onrender.com/api/movies/movie
+        </div>
+
+        <!-- Update Movie -->
+        <div class="endpoint">
+            <span class="method put">PUT</span> https://backendnost.onrender.com/api/movies/movie/:id
+        </div>
+
+        <!-- Delete Movie -->
+        <div class="endpoint">
+            <span class="method delete">DELETE</span> https://backendnost.onrender.com/api/movies/movie/:id
+        </div>
+
+        <h2>Users Endpoints:</h2>
+
+        <!-- Registration -->
+        <div class="endpoint">
+            <span class="method post">POST</span> https://backendnost.onrender.com/api/users/register
+        </div>
+
+        <!-- Login -->
+        <div class="endpoint">
+            <span class="method post">POST</span> https://backendnost.onrender.com/api/users/login
+        </div>
+
+        <!-- Get All Users -->
+        <div class="endpoint">
+            <span class="method get">GET</span> https://backendnost.onrender.com/api/users/all
+        </div>
+
+        <!-- Private Route -->
+        <div class="endpoint">
+            <span class="method get">GET</span> https://backendnost.onrender.com/api/users/private
+        </div>
+
+        <!-- View Profile -->
+        <div class="endpoint">
+            <span class="method get">GET</span> https://backendnost.onrender.com/api/users/profile
+        </div>
+
+        <!-- Update Profile -->
+        <div class="endpoint">
+            <span class="method put">PUT</span> https://backendnost.onrender.com/api/users/profile/update/:userId
+        </div>
+
+        <!-- Delete User -->
+        <div class="endpoint">
+            <span class="method delete">DELETE</span> https://backendnost.onrender.com/api/users/delete
+        </div>
+
+        <!-- Delete User as Admin -->
+        <div class="endpoint">
+            <span class="method delete">DELETE</span> https://backendnost.onrender.com/api/users/admin/delete/:userId
+        </div>
+    </div>
+</body>
+</html>
