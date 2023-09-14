@@ -107,16 +107,38 @@ export default {
         this.loading = false;
       }
     },
-    promptDeleteProfile() {
-      const confirmed = window.confirm("Are you sure you want to delete your profile? This action cannot be undone.");
-      if (confirmed) {
-        this.deleteProfile();
-      }
-    },
+   promptDeleteProfile() {
+  Swal.fire({
+    title: 'Are you sure?',
+    text: "You won't be able to revert this!",
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: 'gold',
+    cancelButtonColor: 'red',
+    confirmButtonText: 'Yes, delete it!',
+    background: '#333',
+    iconColor: 'gold'
+  }).then((result) => {
+    if (result.isConfirmed) {
+      this.deleteProfile();
+
+
+       Swal.fire({
+         title: 'Deleted!',
+        text: 'Your profile has been deleted.',
+        icon: 'success',
+        background: '#333',
+         iconColor: 'gold',
+         confirmButtonColor: 'gold'
+      });
+    }
+  });
+},
     async deleteProfile() {
       this.loading = true;
       try {
-        const response = await fetch("https://backendnost.onrender.com/api/users/delete", {
+        const response = await fetch(`https://backendnost.onrender.com/api/users/delete`, {
+
           method: 'DELETE',
           headers: {
             'Authorization': 'Bearer ' + this.token
