@@ -117,10 +117,15 @@ const userController = {
 
   async deleteUser(req, res) {
     try {
-      const userId = req.user.userId
+      const userIdFromToken = req.user.userId // ID from the decoded JWT token
+      const userIdToDelete = req.params.userId // ID from the route parameter
 
-      await pool.execute("DELETE FROM Users WHERE id = ?", [userId])
+      // Check if the user is trying to delete their own profile
+      if (userIdFromToken !== userIdToDelete) {
+        return res.status(403).json({ message: "Unauthorized" })
+      }
 
+      await pool.execute("DELETE FROM Users WHERE id = ?", [userIdToDelete])
       res.status(200).json({ message: "User deleted successfully" })
     } catch (error) {
       console.error("Error detail:", error)
@@ -129,30 +134,27 @@ const userController = {
   },
   async deleteUserById(req, res) {
     try {
-      const loggedUser = req.user.userId // the ID of the user who is attempting the delete
-      const targetUserId = req.params.userId // the ID of the user that should be deleted
-
+      const loggedUser = req.user.userId; // the ID of the user who is attempting the delete
+      const targetUserId = req.params.userId; // the ID of the user that should be deleted
+  
       // Fetch the logged in user's details to check if they're an admin
-      const [users] = await pool.execute("SELECT * FROM Users WHERE id = ?", [
-        loggedUser,
-      ])
-      const loggedInUser = users[0]
-
+      const [users] = await pool.execute("SELECT * FROM Users WHERE id = ?", [loggedUser]);
+      const loggedInUser = users[0];
+  
       if (!loggedInUser || !loggedInUser.isAdmin) {
-        return res.status(403).json({ message: "Unauthorized." })
+        return res.status(403).json({ message: "Unauthorized." });
       }
-
+  
       // Now, delete the target user
-      await pool.execute("DELETE FROM Users WHERE id = ?", [targetUserId])
-
-      res
-        .status(200)
-        .json({ message: `User ${targetUserId} deleted successfully` })
+      await pool.execute("DELETE FROM Users WHERE id = ?", [targetUserId]);
+      res.status(200).json({ message: `User ${targetUserId} deleted successfully` });
+  
     } catch (error) {
-      console.error("Error detail:", error)
-      res.status(500).json({ message: "Error deleting user." })
+      console.error("Error detail:", error);
+      res.status(500).json({ message: "Error deleting user." });
     }
-  },
+  }
+,  
 
   async viewProfile(req, res) {
     try {

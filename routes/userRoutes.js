@@ -80,7 +80,9 @@ router.put(
   userController.updateProfile
 )
 
-// Delete user by ID
+// Delete logged-in user's profile
+router.delete("/profile/delete/:userId", auth, userController.deleteUser)
+// Delete user by ID (Admin operation)
 router.delete("/delete/:userId", auth, userController.deleteUserById)
 
 module.exports = router
