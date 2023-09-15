@@ -86,19 +86,34 @@ export default {
 .admin-users {
   padding: 20px;
   font-family: 'Arial', sans-serif;
-  background-color: black;
+  background-color: #1b1b1b;
 }
 
 h3 {
   border-bottom: 2px solid #333;
   padding-bottom: 10px;
   margin-bottom: 20px;
-  color: #444;
+  color: #fff;
+}
+
+.spinner {
+  border: 6px solid #f3f3f3;
+  border-top: 6px solid goldenrod;
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  animation: spin 1s linear infinite;
+  margin: 20px auto;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
 }
 
 .table-wrapper {
   overflow-x: auto;
-  background: black;
+  background: #2c2c2c;
   border-radius: 8px;
   box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
   padding: 1rem;
@@ -107,40 +122,26 @@ h3 {
 table {
   width: 100%;
   border-collapse: collapse;
-  background-color: black;
 }
 
 th, td {
   padding: 10px;
-  border-bottom: 1px solid #ccc;
+  border-bottom: 1px solid #666;
   text-align: left;
+  color: #fff;
 }
 
 thead th {
-  background-color: #333;
-  color: white;
+  background-color: #444;
 }
 
 tbody tr:hover {
   background-color: goldenrod;
+  color: black;
 }
 
 tbody tr:last-child td {
   border-bottom: none;
-}
-
-button {
-  background-color: #FF0000;
-  color: white;
-  border: none;
-  padding: 5px 10px;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
-
-button:hover {
-  background-color: #cc0000;
 }
 
 /* FontAwesome icons styles */
@@ -183,25 +184,11 @@ th i.fas {
     padding-left: 15px;
     font-weight: bold;
     white-space: nowrap;
+    color: #fff;
   }
 
   td:nth-of-type(1):before { content: "First Name"; }
   td:nth-of-type(2):before { content: "Last Name"; }
   td:nth-of-type(3):before { content: "Email"; }
-}
-/* Spinner styles */
-.spinner {
-  border: 16px solid #f3f3f3; /* Light grey */
-  border-top: 16px solid goldenrod; /* Goldenrod */
-  border-radius: 50%;
-  width: 50px;
-  height: 50px;
-  animation: spin 2s linear infinite;
-  margin: 20px auto; /* Center the spinner */
-}
-
-@keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
 }
 </style>
