@@ -37,8 +37,9 @@ For detailed configuration information, refer to the [Vue CLI Configuration Refe
 ## 🐞 **Known Bugs**
 
 - **Admin Logout Issue:** After logging out as an admin, you may need to refresh the page to display the content correctly.
-- **Admin Udpate movie  Issue:** When you are updating a movie u will see e.g  1953-07-01T00:00:00.000 remove the T00:00:00.000 to complete the update 
-
+- **Admin Udpate movie  Issue:** When you are updating a movie u will see e.g  1953-07-01T00:00:00.000 remove the T00:00:00.000 to complete the update.
+- **View Profile:** if you receive a invalid token when viewing profile. logout and login to reload it .
+ 
 
 ---
 
