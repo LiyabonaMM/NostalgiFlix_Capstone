@@ -132,16 +132,20 @@ export default {
           body: JSON.stringify(registrationInfo)
         });
 
-        if (response.status !== 200) {
-          throw new Error(`Server responded with status code: ${response.status}`);
+        const data = await response.json();  // Parse the JSON response here
+
+        if (response.status === 400 && data.message) {
+          throw new Error(data.message);  // Handle email already registered error
         }
 
-        const data = await response.json();
+        if (response.status !== 200 && response.status !== 400) {
+          throw new Error(`Server responded with status code: ${response.status}`);
+        }
 
         if (data.token) {
           localStorage.setItem('authToken', data.token);
           this.setAuthenticated(true);
-          router.push( '/' );
+          router.push('/');
           Swal.fire({
             title: 'Success!',
             text: 'Registration completed successfully.',
@@ -154,9 +158,12 @@ export default {
         } else {
           this.errorMessage = data.message || 'Error registering the user.';
         }
+
       } catch (error) {
-        this.errorMessage = 'Error during registration.';
-        router.push( '/login' );
+        this.errorMessage = error.message;
+        if (error.message !== 'This email is already registered.') {
+          router.push('/login'); // Navigate to login if there's an error that's not related to email already being registered
+        }
       } finally {
         this.isLoading = false;
       }
