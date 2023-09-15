@@ -3,6 +3,7 @@
 Welcome to the NostalgiFlix API. This document provides you with details on how to access and utilize the various endpoints available.
 
 ---
+## Live API - https://backendnost.onrender.com
 
 ## 🎥 **Movies Endpoint**
 
