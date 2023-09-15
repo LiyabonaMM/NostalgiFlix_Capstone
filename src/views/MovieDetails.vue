@@ -1,6 +1,10 @@
 <template>
   <div class="details-container bg-dark text-white">
-    <div v-if="movie" class="movie-details">
+    <!-- Spinner -->
+    <div v-if="loading" class="spinner"></div>
+
+    <!-- Movie Details -->
+    <div v-else-if="movie" class="movie-details">
       <div class="movie-image">
         <img :src="movie.imageUrl" alt="Movie Poster" class="detail-img" />
       </div>
@@ -21,6 +25,11 @@
         </button>
       </div>
     </div>
+
+    <!-- Error Message -->
+    <div v-else>
+      <p>Unable to fetch movie details. Please try again later.</p>
+    </div>
   </div>
 </template>
 
@@ -31,9 +40,11 @@ import Swal from 'sweetalert2';
 export default {
   data() {
     return {
-      movie: null
+      movie: null,
+      loading: true  // Initial loading state
     };
   },
+
   methods: {
     ...mapActions(['addToCart']),
 
@@ -58,9 +69,12 @@ export default {
         this.movie = data[0][0];
       } catch (error) {
         console.error("Error fetching movie:", error);
+      } finally {
+        this.loading = false;  // Hide the spinner once data fetch is complete
       }
     }
   },
+
   mounted() {
     const movieId = this.$route.params.id;
     this.fetchMovieById(movieId);
@@ -154,5 +168,24 @@ export default {
 
 .btn-add-to-cart:hover {
   background-color: #e6bf00;
+}
+
+/* Spinner styles */
+.spinner {
+  border: 16px solid #f3f3f3; /* Light grey */
+  border-top: 16px solid #FFD700; /* Gold color */
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  animation: spin 2s linear infinite;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%); /* Center the spinner */
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
 }
 </style>

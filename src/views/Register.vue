@@ -166,6 +166,7 @@ export default {
 </script>
 
 <style scoped>
+
 .register-container {
     font-family: 'Roboto', sans-serif;
     padding: 2rem;

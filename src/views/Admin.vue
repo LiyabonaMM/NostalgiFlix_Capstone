@@ -1,7 +1,7 @@
 <template>
   <div class="admin-container">
     <!-- Admin Login -->
-    <div v-if="!authToken" class="login-section">
+    <div v-if="!authToken && !isLoading" class="login-section">
       <h3>Admin Login</h3>
       <input v-model="adminCredentials.email" placeholder="Email" />
       <input
@@ -12,6 +12,12 @@
       <p v-if="loginError" class="error-message">{{ loginError }}</p>
       <button @click="signInAsAdmin">Sign In</button>
     </div>
+
+    <!-- Loading spinner -->
+    <div v-if="isLoading" class="spinner-container">
+      <div class="spinner"></div>
+    </div>
+
     <!-- If already logged in, you can have sections for Movie and User management here... -->
   </div>
 </template>
@@ -30,7 +36,8 @@ export default {
   data() {
     return {
       adminCredentials: { email: '', password: '' },
-      loginError: null
+      loginError: null,
+      isLoading: false
     };
   },
   computed: {
@@ -40,6 +47,7 @@ export default {
   },
   methods: {
     async signInAsAdmin() {
+      this.isLoading = true; // Start loading
       this.loginError = null;
       try {
         const response = await fetch("https://backendnost.onrender.com/api/users/login", {
@@ -71,6 +79,8 @@ export default {
       } catch (error) {
         console.error("Error logging in:", error);
         this.showSwalError("Error occurred while logging in.");
+      } finally {
+        this.isLoading = false; // Stop loading
       }
     },
 
@@ -131,5 +141,26 @@ button:hover {
 .error-message {
   color: red;
   margin: 10px 0;
+}
+/* Spinner*/
+.spinner-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 80vh;
+}
+
+.spinner {
+  border: 5px solid rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  border-top: 5px solid #FFD700;
+  width: 50px;
+  height: 50px;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
 }
 </style>

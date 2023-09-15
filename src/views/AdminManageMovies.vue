@@ -1,5 +1,7 @@
 <template>
   <div class="admin-movies">
+    <!-- Spinner Display -->
+    <div v-if="loading" class="spinner"></div>
     <div v-if="isAuthenticated">
       <h2>Manage Movies</h2>
 
@@ -56,6 +58,7 @@ export default {
     return {
       movies: [],
       selectedMovie: null,
+      loading: false  // Initialize loading property
     };
   },
   computed: {
@@ -75,11 +78,14 @@ export default {
   },
   async created() {
     if (this.isAuthenticated) {
+      this.loading = true;  // Start loading here
       try {
         const response = await axios.get("https://backendnost.onrender.com/api/movies/movies");
         this.movies = response.data[0];
       } catch (err) {
         console.error(err);
+      } finally {
+        this.loading = false;  // End loading here
       }
     }
   },
@@ -121,6 +127,7 @@ export default {
           const index = this.movies.findIndex(movie => movie.id === this.selectedMovie.id);
           this.movies.splice(index, 1, this.selectedMovie);
           this.selectedMovie = null;
+          this.showSwalSuccess("Movie updated successfully!");
         } else {
           console.error("Error updating movie:", response.data);
           this.showSwalError("Error occurred while updating the movie.");
@@ -130,7 +137,6 @@ export default {
         this.showSwalError("Error occurred while updating the movie.");
       }
     },
-
     showSwalSuccess(message) {
       Swal.fire({
         icon: 'success',
@@ -143,7 +149,6 @@ export default {
         confirmButtonColor: 'gold'
       });
     },
-
     showSwalError(message) {
       Swal.fire({
         icon: 'error',
@@ -160,10 +165,28 @@ export default {
 
 <style scoped>
 .admin-movies {
-  padding: 20px;
-  background-color: #2c2c2c;
-  border-radius: 10px;
-}
+    padding: 20px;
+    background-color: #2c2c2c;
+    border-radius: 10px;
+  }
+
+  /* Spinner Styling */
+  .spinner {
+    border: 4px solid rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    border-top: 4px solid gold;
+    width: 40px;
+    height: 40px;
+    animation: spin 1s linear infinite;
+    margin: 0 auto;
+    margin-top: 50px;
+  }
+
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+
 
 .movie-list {
   list-style-type: none;
